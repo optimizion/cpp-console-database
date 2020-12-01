@@ -35,10 +35,12 @@ int main()
 
 	int user_input;
 
+
+
 	while (true)
 	{
-		std::cout << "input? : ";
-		std::cin >> user_input;
+		cout << "input? : ";
+		cin >> user_input;
 		switch (user_input)
 		{
 		case 1:
