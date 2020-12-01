@@ -1,19 +1,20 @@
-// cpp-console-database.cpp : This file contains the 'main' function. Program execution begins and ends there.
-
 #include <iostream>
 #include <string>
 using namespace std;
 
 class Intranet
 {
+private:
+	static Intranet* instance;
+	Intranet();
 public:
+	static Intranet* getInstance();
 	enum CONSOLE
 	{
 		START,
 		SIGNIN,
 		SIGNUP,
 		FINDID,
-		FINDPW,
 		EXIT
 	};
 	void clearConsole();
@@ -21,34 +22,43 @@ public:
 	void printStart();
 	void printSignIn();
 	void printSignUp();
+	void printEnterId();
+	void printEnterPw();
 	void printFindId();
-	void printFindPw();
 	void printExit();
 };
 
+Intranet* Intranet::instance = 0;
+Intranet* Intranet::getInstance() {
+	if (instance == 0) {
+		instance = new Intranet();
+	}
+
+	return instance;
+}
+
 int main()
 {
-	Intranet intranet = Intranet();
-	//std::cout << "Hello World!\n";
+	Intranet* intranet = Intranet::getInstance();
 
-	intranet.printConsole(Intranet::CONSOLE::START);
-
+	// Access Intranet
+	intranet->printConsole(Intranet::CONSOLE::START);
 	int user_input;
 
-
-
+	// Infinity Loop
 	while (true)
 	{
-		cout << "input? : ";
+		cout << "Number : ";
 		cin >> user_input;
 		switch (user_input)
 		{
 		case 1:
+		{
 			string studentId;
 			string studentPw;
 			while (true)
 			{
-				intranet.printConsole(Intranet::CONSOLE::SIGNIN);
+				intranet->printConsole(Intranet::CONSOLE::SIGNIN);
 				cin >> user_input;
 				switch (user_input)
 				{
@@ -68,48 +78,51 @@ int main()
 			else
 			{
 			}
+		}
 
 		case 2:
-			intranet.printConsole(Intranet::CONSOLE::SIGNUP);
+			intranet->printConsole(Intranet::CONSOLE::SIGNUP);
 			continue;
 
 		case 3:
-			intranet.printConsole(Intranet::CONSOLE::FINDID);
+			intranet->printConsole(Intranet::CONSOLE::FINDID);
 			continue;
-
-		case 4:
-			intranet.printConsole(Intranet::CONSOLE::FINDPW);
-			continue;
-
 		case 5:
-			intranet.printConsole(Intranet::CONSOLE::EXIT);
+			intranet->printConsole(Intranet::CONSOLE::EXIT);
 			break;
 		default:
 			continue;
 		}
-	}
 
-	return 0;
-};
+		cout << "로그아웃 되었습니다.";
+		return 0;
+	};
+}
+
+void Intranet::clearConsole()
+{
+	system("cls");
+}
 
 void Intranet::printConsole(CONSOLE console)
 {
 	switch (console)
 	{
 	case START:
+		clearConsole();
 		printStart();
 		break;
 	case SIGNIN:
+		clearConsole();
 		printSignIn();
 		break;
 	case SIGNUP:
+		clearConsole();
 		printSignUp();
 		break;
 	case FINDID:
+		clearConsole();
 		printFindId();
-		break;
-	case FINDPW:
-		printFindPw();
 		break;
 	}
 }
@@ -122,7 +135,7 @@ void Intranet::printStart()
 	cout << "|       |    Welcome to Intranet    |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       |                           |       |\n";
-	cout << "|       |       Input  number       |       |\n";
+	cout << "|       |       Enter  number       |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       `---------------------------'       |\n";
 	cout << "|                                           |\n";
@@ -142,12 +155,12 @@ void Intranet::printSignIn()
 	cout << "|       |          Sign In          |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       |                           |       |\n";
-	cout << "|       |       Input  number       |       |\n";
+	cout << "|       |       Enter  number       |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       `---------------------------'       |\n";
 	cout << "|                                           |\n";
-	cout << "|              1. Input ID                  |\n";
-	cout << "|              2. Input PW                  |\n";
+	cout << "|              1. Enter ID                  |\n";
+	cout << "|              2. Enter PW                  |\n";
 	cout << "`-------------------------------------------'\n";
 }
 void Intranet::printSignUp()
@@ -159,16 +172,17 @@ void Intranet::printSignUp()
 	cout << "|       |          Sign Up          |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       |                           |       |\n";
-	cout << "|       |       Input  number       |       |\n";
+	cout << "|       |       Enter  number       |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       `---------------------------'       |\n";
 	cout << "|                                           |\n";
-	cout << "|              1. Input ID                  |\n";
-	cout << "|              2. Input PW                  |\n";
-	cout << "|              3. Input EMAIL               |\n";
-	cout << "|              4. Input USERNAME            |\n";
+	cout << "|              1. Enter ID                  |\n";
+	cout << "|              2. Enter PW                  |\n";
+	cout << "|              3. Enter EMAIL               |\n";
+	cout << "|              4. Enter USERNAME            |\n";
 	cout << "`-------------------------------------------'\n";
 }
+void Intranet::printEnterId() {}
+void Intranet::printEnterPw() {}
 void Intranet::printFindId() {}
-void Intranet::printFindPw() {}
 void Intranet::printExit() {}
