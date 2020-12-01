@@ -1,7 +1,29 @@
 // ManageDatabase.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+// 
 #include <iostream>
+class studentManager {
+
+
+
+};
+
+class subjectManager {
+
+
+
+};
+
+class CourseManager {
+
+
+
+};
+
+class ManageDatabase {
+
+};
 
 int main()
 {

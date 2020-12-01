@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c1ae7a74-99ac-44cb-8ec3-fd57baeaa66b}</ProjectGuid>
-    <RootNamespace>ManageDatabase</RootNamespace>
+    <ProjectGuid>{158a613b-0147-44f1-9631-5b5a0ca4f5fc}</ProjectGuid>
+    <RootNamespace>Database</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>DatabaseTable</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ManageDatabase.cpp" />
+    <ClCompile Include="..\CreateDatabase\CreateDatabase.cpp" />
+    <ClCompile Include="..\ManageDatabase\Course.cpp" />
+    <ClCompile Include="..\ManageDatabase\Student.cpp" />
+    <ClCompile Include="..\ManageDatabase\Subject.cpp" />
+    <ClCompile Include="Database.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

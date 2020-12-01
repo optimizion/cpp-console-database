@@ -1,0 +1,6 @@
+class Subject {
+public:
+
+private:
+
+};
