@@ -2,13 +2,12 @@
 #include <fstream>
 #include <string>
 
-
 using namespace std;
 
 #define User_MAX 100
 #define ESC 27
 
-class CON_class {
+class Ctrl_class {
 public:
 	enum menu {
 		Insert,
@@ -19,9 +18,9 @@ public:
 	void UserInsert();
 	void ShowUser();
 	void UserDel();
+	void CealrCtrl() {system("cls");};
 };
-
-void CON_class::Printmain() {
+void Ctrl_class::Printmain() {
 	cout << ",-------------------------------------------.\n";
 	cout << "|                                           |\n";
 	cout << "|       ,---------------------------.       |\n";
@@ -40,12 +39,13 @@ void CON_class::Printmain() {
 	cout << "|                                           |\n";
 	cout << "`-------------------------------------------'\n";
 }
-void CON_class::UserInsert() {
-	//clear 달아주기
+void Ctrl_class::UserInsert() {
+	Ctrl_class clear = Ctrl_class();
+	clear.CealrCtrl();
 	ifstream input; 
 	input.open("database.txt");//열람할 파일 이름 적는 공간
 	ofstream writefile;
-	writefile.open("database.txt");
+	writefile.open("database.txt"); //쓰기위한 파일 오픈
 	int i = 0;
 	if (input.fail()) {
 		cout << "**파일이 존재하지 않습니다.**" << endl;
@@ -88,16 +88,16 @@ void CON_class::UserInsert() {
 	input.close();
 
 }
-void CON_class::ShowUser() {
+void Ctrl_class::ShowUser() {
 	cout << ",=========================================================================================.\n";
 	cout << "|순번| 과목코드 | 과목명 | 이수구분 | 교수명 | 학점 | 시간표 | 상대평가 유형 | 수업계획서  |\n";
 	cout << "`========================================================================================='\n";
 
 }
-void CON_class::UserDel() {}
+void Ctrl_class::UserDel() {}
 
 int main() {
-	CON_class control = CON_class();
+	Ctrl_class control = Ctrl_class();
 	control.Printmain();
 	int u_input;
 	while (true) {
