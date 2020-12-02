@@ -1,6 +1,0 @@
-class Subject {
-public:
-
-private:
-
-};
