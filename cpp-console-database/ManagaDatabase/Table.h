@@ -61,7 +61,7 @@ private:
 	int grade;			//학점 
 	string timePlan;	//시간표 -> '화(7,8,9)' 
 	string classified;	//이수구분(전공,교양) 
-	string evalType;	//상대평가유형
+	string evalType;	//평가 유형 -> 상대평가 or 절대평가
 public:
 	Subject(string classCode, string className, string professor, int grade, string timePlan, string classified, string evalType)
 	{

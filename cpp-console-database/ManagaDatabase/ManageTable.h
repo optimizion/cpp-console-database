@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include "student.h"
+#include "Table.h"
+
 using namespace std;
 
 
@@ -18,7 +20,6 @@ public:
 	// 파일 삭제
 	// 포인터 이동
 	// 한 줄 읽기
-
 };
 
 class TableManager : FileManager
@@ -80,6 +81,8 @@ public:
 		default:
 			break;
 		}
+		fout.close();
+		fin.close();
 	}
 	bool deleteTable(TABLE table)
 	{
@@ -129,6 +132,7 @@ public:
 			break;
 		}
 	}
+	bool hasTable(TABLE table) {}
 };
 
 class StudentManager : TableManager
@@ -138,17 +142,7 @@ public:
 
 	void insertData()
 	{
-		string Id;
-		string Name;
-		string SexInput;
-		char Sex;
-		int Grade;
-		int Age;
-		string Email;
-		string PhoneNum;
-		string Address;
-
-		cout << "학번을 입력하세요.->";
+		/*cout << "학번을 입력하세요.->";
 		cin >> Id;
 		cout << "이름을 입력하세요.->";
 		cin >> Name;
@@ -183,6 +177,8 @@ public:
 		student a(Id, Name, Sex, Grade, Age, Email, PhoneNum, Address);
 
 		Manager.AddStudent(a);
+
+		MoveFirst();*/
 	}
 
 	void deleteData()
@@ -198,22 +194,25 @@ public:
 class SubjectManager : TableManager
 {
 public:
-	bool createTable(TABLE table)
+	void insertData(Subject subjectData)
 	{
-
-	}
-	void insertData()
-	{
+		string row_data[10];
 		//1. 배열 안에 넣기 ,로 구분
 		//2. 중복된 데이터 방지
+		ifstream read_data;
+		ofstream write_data;
 
-		ifstream write_data;
-		write_data.open("");
-		if (write_data.is_open())
+		read_data.open("subject.txt");
+		if (!read_data.is_open())
 		{
-
+			write_data.open("subject.txt");
+			exit(1);
 		}
+		string classCode;
+		//classCode, className, professor, grade, timePlan, classified, evalType
 
+
+		read_data.close();
 		write_data.close();
 
 	}
@@ -296,13 +295,11 @@ public:
 class LoginInfoManager : TableManager
 {
 public:
-	bool createTable(TABLE table) {}
+	void insertData(LoginInfo loginData) {}
 
-	void insertData() {}
+	void deleteData(string studentId) {}
 
-	void deleteData() {}
-
-	void updateData() {}
+	void updatePassword(string studentId) {}
 };
 // 이 부분도 파일에 쓸까요? Yes
 //cout << "-----------------------------------------------" << endl;

@@ -141,8 +141,8 @@
   <ItemGroup>
     <ClCompile Include="Create_File.cpp" />
     <ClCompile Include="ManagaDatabase.cpp" />
-    <ClCompile Include="ManageTable.cpp" />
-    <ClCompile Include="Table.cpp" />
+    <ClCompile Include="ManageTable.h" />
+    <ClCompile Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File_Manager_Student.h" />

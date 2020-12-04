@@ -18,13 +18,13 @@
     <ClCompile Include="ManagaDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManageTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Table.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Create_File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManageTable.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

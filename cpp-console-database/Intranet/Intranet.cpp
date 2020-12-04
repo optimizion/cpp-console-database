@@ -165,7 +165,6 @@ int main()
 
 bool Intranet::checkLogin(string id, string pw)
 {
-	// 여기 수정하시면 돼요.
 	char ID[10], PW[10], line[100];
 	int i, j;
 	cout << "아이디(학번)을 입력하세요";
@@ -176,20 +175,7 @@ bool Intranet::checkLogin(string id, string pw)
 	FILE* fp;
 	fp = fopen("student.txt", "r");
 	for (i = 0; i < 4; i++)
-	{
-		fgets(line, 20, fp);
-
-		line[9] = '\0';
-		line[18] = '\0';
-
-		if (strcmp(ID, &line[0]) == 0 && strcmp(PW, &line[10]) == 0)
-		{
-			printf("로그인 통과");
-			break;
-		}
-	}
-
-	fclose(fp);
+		fclose(fp);
 }
 
 void Intranet::clearConsole()
