@@ -196,25 +196,56 @@ class SubjectManager : TableManager
 public:
 	void insertData(Subject subjectData)
 	{
-		string row_data[10];
-		//1. 배열 안에 넣기 ,로 구분
-		//2. 중복된 데이터 방지
-		ifstream read_data;
-		ofstream write_data;
-
-		read_data.open("subject.txt");
-		if (!read_data.is_open())
-		{
-			write_data.open("subject.txt");
-			exit(1);
-		}
+		//::해야할 것::
+		   // 문자열 잘라서 저장
+		   // 중복 방지
+		   // NOT NULL 값 유무 검사
+		int i = 0;
 		string classCode;
-		//classCode, className, professor, grade, timePlan, classified, evalType
+		string className;
+		string professor;
+		int grade;
+		string timePlan;
+		string classified;
+		string evalType;
 
+		Subject* sub[100]; 
+		*sub[100]= Subject(classCode, className, professor, grade, timePlan, classified, evalType);
 
-		read_data.close();
-		write_data.close();
-
+		//파일 작성
+		ofstream out("test.txt");
+		while (true)
+		{
+			if (i < 3) {
+				cout << "과목코드(A1111)->";
+				cin >> classCode;
+				out << classCode << " ";
+				cout << "과목명->";
+				cin >> className;
+				out << className << " ";
+				cout << "교수명->";
+				cin >> professor;
+				out << professor << " ";
+				cout << "학점->";
+				cin >> grade;
+				out << grade << " ";
+				cout << "시간표(요일,교시)->";
+				cin >> timePlan;
+				out << timePlan << " ";
+				cout << "이수구분(전공,교양)->";
+				cin >> classified;
+				out << classified << " ";
+				cout << "평가유형->";
+				cin >> evalType;
+				out << evalType << " ";
+				sub[i] = new Subject(classCode, className, professor, grade, timePlan, classified, evalType);
+				i++;
+			}else {
+				break;
+			}
+			delete[] sub;
+			out.close();
+		}
 	}
 
 	void deleteData()
