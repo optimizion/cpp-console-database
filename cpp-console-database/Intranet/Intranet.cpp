@@ -1,11 +1,14 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include <thread>
 #include <chrono>
+
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
+
 class Intranet
 {
 private:
@@ -15,19 +18,21 @@ public:
 	static Intranet* getInstance();
 	void clearConsole();
 	void printStart();
-	void printSignIn(string id, string pw);
-	void printEnterId();
-	void printEnterPw();
+	void printSignIn(string id);
 	void printExit();
 	bool checkLogin(string id, string pw);
 };
-Intranet::Intranet() {}
+
+Intranet::Intranet()
+{
+}
 Intranet* Intranet::instance = 0;
-Intranet* Intranet::getInstance() {
-	if (instance == 0) {
+Intranet* Intranet::getInstance()
+{
+	if (instance == 0)
+	{
 		instance = new Intranet();
 	}
-
 	return instance;
 }
 
@@ -36,111 +41,142 @@ int main()
 	// get Intranet instance
 	Intranet* intranet = Intranet::getInstance();
 
-	// Access Intranet
-	intranet->printStart();
 	// Infinity Loop
 	while (true)
 	{
-		int user_input;
-		cout << "Number : ";
+		// Access Intranet
+		intranet->clearConsole();
+		intranet->printStart();
+		int user_input = 0;
+		cout << "Enter number : ";
 		cin >> user_input;
-		switch (user_input)
-		{
-		case 1:
-			// Sign In
+
+		// sign in
+		if (user_input == 1)
 		{
 			string studentId = "";
 			string studentPw = "";
 			while (true)
 			{
 				intranet->clearConsole();
-				intranet->printSignIn(studentId, studentPw);
-				cout << "Number : ";
+				intranet->printSignIn(studentId);
+				user_input = 0;
+				cout << "Enter number : ";
 				cin >> user_input;
-				switch (user_input)
+
+				// enter studentId
+				if (user_input == 1)
 				{
-				case 1:
-					// enter studentId
-					while (true) {
+					while (true)
+					{
 						cout << "Enter your Student ID : ";
+						//getline(cin, studentId);
 						cin >> studentId;
 
-						if (studentId.length() > 9) {
+						if (studentId.length() > 9 || studentId.empty() || studentId.find(' ') != std::string::npos)
+						{
 							cout << "wrong id. Please retry.\n";
 							studentId = "";
 							sleep_for(seconds(1));
+							intranet->clearConsole();
+							intranet->printSignIn(studentId);
 							continue;
 						}
 						break;
 					}
-					break;
-				case 2:
-					// enter studentPw. I cannot afford to make it securely. Just show..
+				}
+				// enter studentPw. I cannot afford to make it securely. Just show..
+				else if (user_input == 2)
+				{
 					cout << "Enter your Password : ";
 					cin >> studentPw;
-					break;
-				case 3:
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					if (studentPw.empty() || studentPw.find(' ') != string::npos)
+					{
+						cout << "wrong password. Please retry.\n";
+						studentPw = "";
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						sleep_for(seconds(1));
+						intranet->clearConsole();
+						intranet->printSignIn(studentId);
+						continue;
+					}
+				}
+				// login
+				else if (user_input == 3)
+				{
 					// try login
-					cout << "?";
-					break;
-				case 4:
-					// go back
-					break;
-				default:
-					// wrong input
+					cout << "trying login...\n";
+					sleep_for(seconds(1));
+
+					// check login
+					bool isSuccess = intranet->checkLogin(studentId, studentPw);
+					if (isSuccess)
+					{
+						// login successed.
+						sleep_for(seconds(2));
+					}
+					else
+					{
+						// login failed.
+						sleep_for(seconds(2));
+					}
+				}
+				// go back
+				else if (user_input == 4)
+				{
 					break;
 				}
-			}
-			// check login
-			bool isSuccess = intranet->checkLogin(studentId, studentPw);
-			if (isSuccess) {
-				// login successed.
-				sleep_for(seconds(1));
-			}
-			else {
-				// login failed.
-				sleep_for(seconds(1));
+				// wrong input
+				else
+				{
+					// wrong input
+					cout << "wrong input. Please retry.\n";
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					sleep_for(seconds(1));
+				}
 			}
 		}
-		case 2:
+		// exit
+		else if (user_input == 2)
+		{
 			// Exit
 			intranet->clearConsole();
 			intranet->printExit();
 			break;
-		default:
-			// wrong input
+		}
+		// wrong input
+		else
+		{
 			// get rid of failure state
 			cin.clear();
 			// discard 'bad' character(s)
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			cout << "wrong input. Please retry.\n";
+			sleep_for(seconds(1));
 			continue;
 		}
-		return 0;
 	};
+
+	return 0;
 }
-bool Intranet::checkLogin(string id, string pw) {
-	if (id == "")
-	{
-		// no id input
-		cout << "no id input. Please retry.\n";
-	}
-	else if (pw == "")
-	{
-		// no pw input
-		cout << "no password input. Please retry.\n";
-	}
-	else {
-		// check student database file for login
-		if (true) {
-			// login success
-			return true;
-		}
-		else {
-			// login failed
-			return false;
-		}
-	}
+
+bool Intranet::checkLogin(string id, string pw)
+{
+	char ID[10], PW[10], line[100];
+	int i, j;
+	cout << "아이디(학번)을 입력하세요";
+	cin >> ID;
+	cout << "비밀번호를 입력하세요(무조건 8자리)";
+	cin >> PW;
+
+	FILE* fp;
+	fp = fopen("student.txt", "r");
+	for (i = 0; i < 4; i++)
+		fclose(fp);
 }
 
 void Intranet::clearConsole()
@@ -156,9 +192,6 @@ void Intranet::printStart()
 	cout << "|       |                           |       |\n";
 	cout << "|       |    Welcome to Intranet    |       |\n";
 	cout << "|       |                           |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |       Enter  number       |       |\n";
-	cout << "|       |                           |       |\n";
 	cout << "|       `---------------------------'       |\n";
 	cout << "|                                           |\n";
 	cout << "|              1. Sign In                   |\n";
@@ -167,15 +200,13 @@ void Intranet::printStart()
 	cout << "`-------------------------------------------'\n";
 }
 
-void Intranet::printSignIn(string id, string pw)
+void Intranet::printSignIn(string id)
 {
 	cout << ",-------------------------------------------.\n";
 	cout << "|                                           |\n";
 	cout << "|       ,---------------------------.       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       |          Sign In          |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |       Enter  number       |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       |---------------------------|       |\n";
 	cout << "|       |                           |       |\n";
@@ -186,43 +217,14 @@ void Intranet::printSignIn(string id, string pw)
 	cout << "|                                           |\n";
 	cout << "|              1. Enter ID                  |\n";
 	cout << "|              2. Enter PW                  |\n";
-	cout << "|              4. Login                     |\n";
-	cout << "|              3. Go Back                   |\n";
+	cout << "|              3. Login                     |\n";
+	cout << "|              4. Go Back                   |\n";
 	cout << "|                                           |\n";
 	cout << "`-------------------------------------------'\n";
 }
 
-void Intranet::printEnterId() {
-	cout << ",-------------------------------------------.\n";
-	cout << "|                                           |\n";
-	cout << "|       ,---------------------------.       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |         Enter ID          |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |   Enter your student ID   |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       `---------------------------'       |\n";
-	cout << "|                                           |\n";
-	cout << "`-------------------------------------------'\n";
-}
-
-void Intranet::printEnterPw() {
-	cout << ",-------------------------------------------.\n";
-	cout << "|                                           |\n";
-	cout << "|       ,---------------------------.       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |         Enter PW          |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       |       Enter your PW       |       |\n";
-	cout << "|       |                           |       |\n";
-	cout << "|       `---------------------------'       |\n";
-	cout << "|                                           |\n";
-	cout << "`-------------------------------------------'\n";
-}
-
-void Intranet::printExit() {
+void Intranet::printExit()
+{
 	cout << ",-------------------------------------------.\n";
 	cout << "|                                           |\n";
 	cout << "|       ,---------------------------.       |\n";
@@ -236,3 +238,56 @@ void Intranet::printExit() {
 	cout << "|                                           |\n";
 	cout << "`-------------------------------------------'\n";
 }
+
+/*#include <stdio.h> - 변경된 비밀번호 정보 changestuent 파일에다 새로 작성했습니다. 근데 이거를 로그인정보와 어떻게 엮을지... 난관입니다.
+#include <string.h>
+#include <iostream>
+using namespace std;
+
+void main()
+{
+	cout << "비밀번호 변경을 위해 학번과 비밀번호를 작성해주세요." << endl;
+	char ID[10], PW[10], changePW[10], line[100];
+	int i, j;
+	cout << "아이디입력";
+	cin >> ID;
+	cout << "비밀번호 입력(무조건 8자리)";
+	cin >> PW;
+
+	FILE* fp;
+	FILE* fp1;
+	fp = fopen("student.txt", "r");//파일 이름 변경 필요
+	for (i = 0; i < 4; i++)
+	{
+		fgets(line, 20, fp);
+
+		line[9] = '\0';
+		line[18] = '\0';
+
+		if (strcmp(ID, &line[0]) == 0 && strcmp(PW, &line[10]) == 0)
+		{
+			cout << "확인된 정보입니다. 비밀번호 변경 부탁드립니다." << endl;
+			cout << "새로 변경할 비밀번호 입력:";
+			cin >> changePW;
+			cout << endl;
+			cout << "입력이 완료되었습니다.";
+			fp1 = fopen("changestudent.txt", "w");
+			fprintf(fp1, ID);
+			fprintf(fp1, " ");
+			fprintf(fp1, changePW);
+			break;
+
+		}
+
+
+		else
+		{
+			cout << "비확인된 정보입니다" << endl;
+			break;
+		}
+
+	}
+
+	fclose(fp);
+
+}*/
