@@ -3,6 +3,9 @@
 #include <cstdio>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <cctype>
+#include <algorithm>
 #include "student.h"
 #include "Table.h"
 
@@ -195,12 +198,11 @@ class SubjectManager : TableManager
 {
 public:
 	void insertData(Subject subjectData)
-	{
-		//::해야할 것::
-		   // 문자열 잘라서 저장
-		   // 중복 방지
-		   // NOT NULL 값 유무 검사
-		int i = 0;
+	{	//classCode, className, professor, grade, timePlan, classified, evalType
+			//::해야할 것::
+			// 사용자가 특정 키를 누르면 입력 멈춤
+			// 중복 방지
+
 		string classCode;
 		string className;
 		string professor;
@@ -209,43 +211,67 @@ public:
 		string classified;
 		string evalType;
 
-		Subject* sub[100]; 
-		*sub[100]= Subject(classCode, className, professor, grade, timePlan, classified, evalType);
-
+		vector<string> s;
 		//파일 작성
 		ofstream out("test.txt");
-		while (true)
-		{
-			if (i < 3) {
-				cout << "과목코드(A1111)->";
-				cin >> classCode;
-				out << classCode << " ";
-				cout << "과목명->";
-				cin >> className;
-				out << className << " ";
-				cout << "교수명->";
-				cin >> professor;
-				out << professor << " ";
-				cout << "학점->";
-				cin >> grade;
-				out << grade << " ";
-				cout << "시간표(요일,교시)->";
-				cin >> timePlan;
-				out << timePlan << " ";
-				cout << "이수구분(전공,교양)->";
-				cin >> classified;
-				out << classified << " ";
-				cout << "평가유형->";
-				cin >> evalType;
-				out << evalType << " ";
-				sub[i] = new Subject(classCode, className, professor, grade, timePlan, classified, evalType);
-				i++;
-			}else {
-				break;
-			}
-			delete[] sub;
-			out.close();
+		/*if (out.fail()) {
+			cout << "**파일이 존재하지 않습니다.**" << endl;
+			cout << "**파일을 생성합니다.**" << endl;
+			out.open("test.txt");
+		}*/
+
+		for (int i = 0; i < 2; i++) { //for문 > 사용자 특정키로 멈추게 하는 거 추가
+			cout << "과목코드(A1111)->";
+			cin >> classCode;
+			out << classCode << " ";
+
+			cout << "과목명->";
+			cin >> className;
+			out << className << " ";
+
+			cout << "담당교수->";
+			cin >> professor;
+			out << professor << " ";
+
+			cout << "학점->";
+			cin >> grade;
+
+			cout << "시간표(요일(교시))->";
+			cin >> timePlan;
+			out << timePlan << " ";
+
+			cout << "이수구분(전공,교양)->";
+			cin >> classified;
+			out << classified << " ";
+
+			cout << "평가유형->";
+			cin >> evalType;
+			out << evalType << endl;
 		}
+		out.close();
+		char ch;
+		cout << "입력한 데이터를 보시겠습니까?('Y/N') ";
+		cin >> ch;
+		if (ch == 'Y' || ch == 'y') {
+			cout << "::작성한 과목 데이터 목록::" << endl;
+			string open_file; //임시 데이터 저장 공간
+			ifstream read_file; //파일 읽는 함수
+			read_file.open("test.txt"); //파일 열기
+			cout << ",----------------------------------------------------------------------." << endl;
+			cout << "| 과목코드 | 과목명 | 담당교수 | 학점 | 시간표 | 이수구분 | 평가 유형 |" << endl;
+			cout << "'----------------------------------------------------------------------'" << endl;
+
+			while (!read_file.eof())
+			{
+				getline(read_file, open_file);
+				cout << open_file << endl;
+			}
+			read_file.close();
+		}
+		else if (ch == 'N' || ch == 'n') {
+			cout << "Good bye";
+		}
+
 	}
 
 	void deleteData()
