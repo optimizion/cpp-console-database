@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\header">
+      <UniqueIdentifier>{ccfd2991-4e65-42c8-b355-9766157bb78c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ManagaDatabase.cpp">
@@ -21,19 +24,28 @@
     <ClCompile Include="Create_File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Table.h">
+    <ClCompile Include="File_Manager_Student.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="student.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ManageTable.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\header</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.h">
+      <Filter>Source Files\header</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File_Manager_Student.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\header</Filter>
     </ClInclude>
     <ClInclude Include="student.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

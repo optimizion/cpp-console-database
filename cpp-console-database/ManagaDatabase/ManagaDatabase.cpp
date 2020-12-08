@@ -1,9 +1,12 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <thread>
 #include <chrono>
 #include "ManageTable.h"
+#include <direct.h>
+#include <io.h>
 
 using namespace std;
 using namespace std::this_thread;
@@ -15,7 +18,52 @@ private:
 
 public:
 	//테이블을 모아둘 폴더 생성
-	void makeDirectory();
+	bool hasDirectory();
+	bool makeDirectory();
+	Student inputStudentData();
+	Subject inputSubjectData();
+	Course inputCourseData();
+};
+bool ManageDatabase::hasDirectory()
+{
+	if (_waccess(L"./table", 0) != 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool ManageDatabase::makeDirectory()
+{
+	if (_mkdir("./table") != 0)
+	{
+		return false;
+	}
+	return true;
+}
+Student ManageDatabase::inputStudentData()
+{
+	Student student = Student();
+	string studentId, name, email = NULL, phoneNum = NULL, address = NULL;
+	char sex;
+	short grade, age;
+
+	return student;
+};
+Subject ManageDatabase::inputSubjectData()
+{
+	Subject subject = Subject();
+	string classCode, className, professor, timePlan, classified, evalType;
+	int grade;
+
+	return subject;
+};
+Course ManageDatabase::inputCourseData()
+{
+	Course course = Course();
+	string studentId, classCode, className, professor, timePlan, location;
+
+	return course;
 };
 
 class Console
@@ -121,7 +169,8 @@ public:
 		cout << "|              1. Student                   |\n";
 		cout << "|              2. Subject                   |\n";
 		cout << "|              3. Course                    |\n";
-		cout << "|              4. Go Back                   |\n";
+		cout << "|              4. Login Info                |\n";
+		cout << "|              5. Go Back                   |\n";
 		cout << "|                                           |\n";
 		cout << "`-------------------------------------------'\n";
 	}
@@ -151,7 +200,7 @@ public:
 		cout << "|       `---------------------------'       |\n";
 		cout << "|                                           |\n";
 		cout << "`-------------------------------------------'\n";
-		cout << "ex)학번, 이름, 성별, 학년, 나이, 이메일, 전화번호('-'제외), 주소\n";
+		cout << "ex)학번, 이름, 성별, 학년, 나이, 이메일, 휴대폰번호('-'제외), 주소\n";
 	}
 	void printInsertSubjectData()
 	{
@@ -183,31 +232,111 @@ public:
 			cout << "ex)학번, 과목코드, 과목명, 교수명, 시간표(화(7,8,9)), 강의실\n";
 		}
 	}
+	void printUpdateStudentData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Update Student Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateSubjectData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Update Subject Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateCourseData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Update Course Data     |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteStudentData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Delete Student Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteSubjectData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Delete Subject Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteCourseData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Delete Course Data     |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
 };
 
 int main()
 {
-	// print start console
+	ManageDatabase manageDatabase;
 	Console console;
-	console.printConsole(Console::TYPE::MAIN);
-
-	// user_input
-	int user_input;
-	cin >> user_input;
 
 	// infinity loop, user_input, print console
 	while (true)
 	{
+		//clear console
+		console.clearConsole();
+		console.printConsole(Console::TYPE::MAIN);
+
+		// user_input
+		int user_input;
+		cout << "Enter number : ";
+		cin >> user_input;
+
 		//manage table
 		if (user_input == 1)
 		{
-			// clear console, show manage table console
-			console.clearConsole();
-			console.printConsole(Console::TYPE::MANAGE_TABLE);
-			// user_input
-			cin >> user_input;
 			while (true)
 			{
+				// clear console, show manage table console
+				console.clearConsole();
+				console.printConsole(Console::TYPE::MANAGE_TABLE);
+
+				// user_input
+				int user_input;
+				cout << "Enter number : ";
+				cin >> user_input;
+
 				TableManager tableManager;
 				// create table
 				if (user_input == 1)
@@ -217,25 +346,69 @@ int main()
 					console.printConsole(Console::TYPE::SELECT_TABLE);
 
 					// 번호를 입력받고, 해당하는 테이블을 만든다
+					int user_input;
+					cout << "Enter number : ";
+					cin >> user_input;
 					TableManager::TABLE table;
+					// create student table
 					if (user_input == 1)
 					{
+						if (manageDatabase.hasDirectory())
+						{
+							manageDatabase.makeDirectory();
+						}
 						table = TableManager::TABLE::STUDENT;
+						tableManager.createTable(table);
+						break;
 					}
+					// create subject table
 					else if (user_input == 2)
 					{
+						if (manageDatabase.hasDirectory())
+						{
+							manageDatabase.makeDirectory();
+						}
 						table = TableManager::TABLE::SUBJECT;
+						tableManager.createTable(table);
+						break;
 					}
+					// create course table
 					else if (user_input == 3)
 					{
+						if (manageDatabase.hasDirectory())
+						{
+							manageDatabase.makeDirectory();
+						}
 						table = TableManager::TABLE::COURSE;
+						tableManager.createTable(table);
+						break;
 					}
+					// create loginInfo table
 					else if (user_input == 4)
 					{
+						if (manageDatabase.hasDirectory())
+						{
+							manageDatabase.makeDirectory();
+						}
 						table = TableManager::TABLE::LOGIN_INFO;
+						tableManager.createTable(table);
+						break;
+					}
+					// go back
+					else if (user_input == 5)
+					{
+						break;
+					}
+					// wrong input
+					else
+					{
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						cout << "wrong input. Please retry.\n";
+						sleep_for(seconds(1));
+						continue;
 					}
 
-					tableManager.createTable(table);
 				}
 				// delete table
 				else if (user_input == 2)
@@ -245,29 +418,60 @@ int main()
 					console.printConsole(Console::TYPE::SELECT_TABLE);
 
 					// 번호를 입력받고, 해당하는 테이블을 삭제한다
+					int user_input;
+					cout << "Enter number : ";
+					cin >> user_input;
+
 					TableManager::TABLE table;
+					//student table 삭제
 					if (user_input == 1)
 					{
+						bool isDeleted;
 						table = TableManager::TABLE::STUDENT;
+						//isDeleted = tableManager.deleteTable(table);
+						tableManager.deleteTable(table);
+						break;
 					}
+					//subject table 삭제
 					else if (user_input == 2)
 					{
 						table = TableManager::TABLE::SUBJECT;
+						tableManager.deleteTable(table);
+						break;
 					}
+					//course table 삭제
 					else if (user_input == 3)
 					{
 						table = TableManager::TABLE::COURSE;
+						tableManager.deleteTable(table);
+						break;
 					}
+					//loginInfo table 삭제
 					else if (user_input == 4)
 					{
 						table = TableManager::TABLE::LOGIN_INFO;
+						tableManager.deleteTable(table);
+						break;
 					}
-
-					tableManager.deleteTable(table);
+					//go back
+					else if (user_input == 5)
+					{
+						break;
+					}
+					//wrong input
+					else
+					{
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						cout << "wrong input. Please retry.\n";
+						sleep_for(seconds(1));
+						continue;
+					}
 				}
 				// go back
 				else if (user_input == 3)
 				{
+					console.clearConsole();
 					break;
 				}
 				// wrong input
@@ -284,13 +488,14 @@ int main()
 		//manage table data
 		else if (user_input == 2)
 		{
-			// clear console, show manage select table console
-			console.clearConsole();
-			console.printConsole(Console::TYPE::SELECT_TABLE);
-
 			while (true)
 			{
+				// clear console, show manage select table console
+				console.clearConsole();
+				console.printConsole(Console::TYPE::SELECT_TABLE);
 				// user_input
+				int user_input;
+				cout << "Enter number : ";
 				cin >> user_input;
 				// clear console, show manage table data console
 				console.clearConsole();
@@ -300,15 +505,19 @@ int main()
 				{
 					StudentManager studentManager;
 					// user_input
+					int user_input;
+					cout << "Enter number : ";
 					cin >> user_input;
 					// insert data
 					if (user_input == 1)
 					{
-						StudentManager.insertData();
+						//Student student = manageDatabase.inputStudentData();
+						//StudentManager.insertData(student);
 					}
 					// update data
 					else if (user_input == 2)
 					{
+						//Subject subject = manageDatabase.inputSubjectData();
 					}
 					// delete data
 					else if (user_input == 3)
@@ -317,19 +526,136 @@ int main()
 					// go back
 					else if (user_input == 4)
 					{
+						continue;
 					}
 					// wrong input
 					else
 					{
+						// wrong input
+						cout << "wrong input. Please try again.\n";
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						sleep_for(seconds(1));
 					}
 				}
 				// subject table
 				else if (user_input == 2)
 				{
+					SubjectManager subjectManager;
+					// user_input
+					int user_input;
+					cout << "Enter number : ";
+					cin >> user_input;
+					// insert data
+					if (user_input == 1)
+					{
+						//SubjectManager.insertData();
+					}
+					// update data
+					else if (user_input == 2)
+					{
+						//SubjectManager.updateData();
+					}
+					// delete data
+					else if (user_input == 3)
+					{
+						//SubjectManager.deleteData();
+					}
+					// go back
+					else if (user_input == 4)
+					{
+						continue;
+					}
+					// wrong input
+					else
+					{
+						// wrong input
+						cout << "wrong input. Please try again.\n";
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						sleep_for(seconds(1));
+					}
 				}
 				// course table
 				else if (user_input == 3)
 				{
+					CourseManager courseManager;
+					// user_input
+					int user_input;
+					cout << "Enter number : ";
+					cin >> user_input;
+					// insert data
+					if (user_input == 1)
+					{
+						//CourseManager.insertData();
+					}
+					// update data
+					else if (user_input == 2)
+					{
+						//CourseManager.updateData();
+					}
+					// delete data
+					else if (user_input == 3)
+					{
+						//CourseManager.deleteData();
+					}
+					// go back
+					else if (user_input == 4)
+					{
+						continue;
+					}
+					// wrong input
+					else
+					{
+						// wrong input
+						cout << "wrong input. Please try again.\n";
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						sleep_for(seconds(1));
+					}
+				}
+				// loginInfo table
+				else if (user_input == 4)
+				{
+					LoginInfoManager loginInfoManager;
+					// user_input
+					int user_input;
+					cout << "Enter number : ";
+					cin >> user_input;
+					// insert data
+					if (user_input == 1)
+					{
+						//LoginInfoManager.insertData();
+					}
+					// update data
+					else if (user_input == 2)
+					{
+						//LoginInfoManager.updateData();
+					}
+					// delete data
+					else if (user_input == 3)
+					{
+						//LoginInfoManager.deleteData();
+					}
+					// go back
+					else if (user_input == 4)
+					{
+						continue;
+					}
+					// wrong input
+					else
+					{
+						cout << "wrong input. Please try again.\n";
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						sleep_for(seconds(1));
+					}
+
+				}
+				else if (user_input == 5)
+				{
+					console.clearConsole();
+					break;
 				}
 				// wrong input
 				else
@@ -348,53 +674,17 @@ int main()
 			// clear console, show exit console
 			console.clearConsole();
 			console.printConsole(Console::TYPE::EXIT);
+			sleep_for(seconds(1));
+			break;
 		}
 		//wrong input
 		else
 		{
+			// wrong input
+			cout << "wrong input. Please try again.\n";
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			sleep_for(seconds(1));
 		}
-
-		console.clearConsole();
-		console.printConsole(Console::TYPE::MAIN);
-		int user_input;
-		cin >> user_input;
 	}
 }
-
-
-
-
-// Manage Table
-
-
-/*
-
-	Printmain();
-	int u_input;
-	while (true)
-	{
-		cout << "Choose number: ";
-		cin >> u_input;
-		//fail()입력 에러가 발생했을 때  true 반환
-		if (cin.fail())
-		{
-			cin.clear(); //에러버퍼 비우기.
-			cin.ignore(1024, '\n');
-			continue;
-		}
-		switch (u_input)
-		{
-		case 1:
-			UserInsert();
-			break;
-		case 2:
-			ShowUser();
-			break;
-		case 3:
-			UserDel();
-			break;
-		default:
-			break;
-		}
-	}
-*/
