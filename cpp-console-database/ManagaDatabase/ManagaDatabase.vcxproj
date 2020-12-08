@@ -140,8 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Create_File.cpp" />
+    <ClCompile Include="File_Manager_Student.cpp" />
     <ClCompile Include="ManagaDatabase.cpp" />
     <ClCompile Include="ManageTable.h" />
+    <ClCompile Include="student.cpp" />
+    <ClCompile Include="Table.cpp" />
     <ClCompile Include="Table.h" />
   </ItemGroup>
   <ItemGroup>

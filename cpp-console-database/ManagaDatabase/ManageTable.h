@@ -1,3 +1,4 @@
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include <string>
 #include <cstdio>
@@ -6,23 +7,29 @@
 #include <vector>
 #include <cctype>
 #include <algorithm>
+#include <thread>
+#include <chrono>
 #include "student.h"
 #include "Table.h"
+#include "File_Manager_Student.h"
+#include <direct.h>
 
+using namespace std::this_thread;
+using namespace std::chrono;
 using namespace std;
-
 
 class FileManager
 {
 public:
 	// 파일 생성
-	bool createFile()
+	void createFile()
 	{
 
 	}
-	// 파일 삭제
 	// 포인터 이동
+
 	// 한 줄 읽기
+
 };
 
 class TableManager : FileManager
@@ -38,7 +45,7 @@ public:
 		LOGIN_INFO
 	};
 	// 테이블 생성
-	bool createTable(TABLE table)
+	void createTable(TABLE table)
 	{
 		ofstream fout;
 		ifstream fin;
@@ -51,6 +58,11 @@ public:
 				fout.open("student.txt");
 				fout << "[studentId, name, sex, grade, age, email, phoneNum, address]\n";
 			}
+			else
+			{
+				cout << "파일이 이미 존재합니다.";
+				sleep_for(seconds(1));
+			}
 			fin.open("student.txt", 1);
 			break;
 		case TABLE::SUBJECT:
@@ -60,8 +72,12 @@ public:
 				fout.open("subject.txt");
 				fout << "[classCode, className, professor, grade, timePlan, classified, evalType]\n";
 			}
+			else
+			{
+				cout << "파일이 이미 존재합니다.";
+				sleep_for(seconds(1));
+			}
 			fin.open("subject.txt", 1);
-
 			break;
 		case TABLE::COURSE:
 			fout.open("course.txt", 1);
@@ -69,6 +85,11 @@ public:
 			{
 				fout.open("course.txt");
 				fout << "[studentId, classCode, className, professor, timePlan, location]\n";
+			}
+			else
+			{
+				cout << "파일이 이미 존재합니다.";
+				sleep_for(seconds(1));
 			}
 			fin.open("course.txt", 1);
 			break;
@@ -78,6 +99,11 @@ public:
 			{
 				fout.open("loginInfo.txt");
 				fout << "[sudentId, password]\n";
+			}
+			else
+			{
+				cout << "파일이 이미 존재합니다.";
+				sleep_for(seconds(1));
 			}
 			fin.open("loginInfo.txt", 1);
 			break;
@@ -92,45 +118,156 @@ public:
 		switch (table)
 		{
 		case TABLE::STUDENT:
-			try
+		{
+			ifstream read;
+			read.open("student.txt");
+			if (!read)
 			{
-				remove("student.txt");
+				cout << "파일이 존재하지 않습니다.\n";
+				sleep_for(seconds(1));
+				return false;
 			}
-			catch (exception e)
+			else
 			{
-				cout << "그런 파일 없음\n";
+				read.close();
+				char user_input;
+				cout << "정말 삭제하시겠습니까?(Y/N) : ";
+				cin >> user_input;
+				if (user_input == 'Y' || user_input == 'y')
+				{
+					remove("student.txt");
+					cout << "파일이 정상적으로 삭제되었습니다.\n";
+					sleep_for(seconds(1));
+					return true;
+				}
+				else if (user_input == 'N' || user_input == 'n')
+				{
+					cout << "파일이 삭제되지 않았습니다.\n";
+					sleep_for(seconds(1));
+					return false;
+				}
+				else
+				{
+					cout << "잘못 입력하였습니다.\n";
+					return false;
+				}
 			}
-			break;
+		}
+		break;
 		case TABLE::SUBJECT:
-			try
+		{
+			ifstream read;
+			read.open("subject.txt");
+			if (!read)
 			{
-				remove("subject.txt");
+				cout << "파일이 존재하지 않습니다.\n";
+				sleep_for(seconds(1));
+				return false;
 			}
-			catch (exception e)
+			else
 			{
-				cout << "그런 파일 없음\n";
+				read.close();
+				char user_input;
+				cout << "정말 삭제하시겠습니까?(Y/N) : ";
+				cin >> user_input;
+				if (user_input == 'Y' || user_input == 'y')
+				{
+					remove("subject.txt");
+					cout << "파일이 정상적으로 삭제되었습니다.\n";
+					sleep_for(seconds(1));
+					return true;
+				}
+				else if (user_input == 'N' || user_input == 'n')
+				{
+					cout << "파일이 삭제되지 않았습니다.\n";
+					sleep_for(seconds(1));
+					return false;
+				}
+				else
+				{
+					cout << "잘못 입력하였습니다.\n";
+					return false;
+				}
 			}
 			break;
+		}
+
 		case TABLE::COURSE:
-			try
+		{
+			ifstream read;
+			read.open("course.txt");
+			if (!read)
 			{
-				remove("course.txt");
+				cout << "파일이 존재하지 않습니다.\n";
+				sleep_for(seconds(1));
+				return false;
 			}
-			catch (exception e)
+			else
 			{
-				cout << "그런 파일 없음\n";
+				read.close();
+				char user_input;
+				cout << "정말 삭제하시겠습니까?(Y/N) : ";
+				cin >> user_input;
+				if (user_input == 'Y' || user_input == 'y')
+				{
+					remove("course.txt");
+					cout << "파일이 정상적으로 삭제되었습니다.\n";
+					sleep_for(seconds(1));
+					return true;
+				}
+				else if (user_input == 'N' || user_input == 'n')
+				{
+					cout << "파일이 삭제되지 않았습니다.\n";
+					sleep_for(seconds(1));
+					return false;
+				}
+				else
+				{
+					cout << "잘못 입력하였습니다.\n";
+					return false;
+				}
 			}
 			break;
+		}
+
 		case TABLE::LOGIN_INFO:
-			try
+		{
+			ifstream read;
+			read.open("loginInfo.txt");
+			if (!read)
 			{
-				remove("loginInfo.txt");
+				cout << "파일이 존재하지 않습니다.\n";
+				sleep_for(seconds(1));
+				return false;
 			}
-			catch (exception e)
+			else
 			{
-				cout << "그런 파일 없음\n";
+				read.close();
+				char user_input;
+				cout << "정말 삭제하시겠습니까?(Y/N) : ";
+				cin >> user_input;
+				if (user_input == 'Y' || user_input == 'y')
+				{
+					remove("loginInfo.txt");
+					cout << "파일이 정상적으로 삭제되었습니다.\n";
+					sleep_for(seconds(1));
+					return true;
+				}
+				else if (user_input == 'N' || user_input == 'n')
+				{
+					cout << "파일이 삭제되지 않았습니다.\n";
+					sleep_for(seconds(1));
+					return false;
+				}
+				else
+				{
+					cout << "잘못 입력하였습니다.\n";
+					return false;
+				}
 			}
 			break;
+		}
+
 		default:
 			break;
 		}
@@ -141,11 +278,19 @@ public:
 class StudentManager : TableManager
 {
 public:
-	bool createTable(TABLE table) {}
-
 	void insertData()
 	{
-		/*cout << "학번을 입력하세요.->";
+		string Id;
+		string Name;
+		string SexInput;
+		char Sex;
+		int Grade;
+		int Age;
+		string Email;
+		string PhoneNum;
+		string Address;
+
+		cout << "학번을 입력하세요.->";
 		cin >> Id;
 		cout << "이름을 입력하세요.->";
 		cin >> Name;
@@ -176,12 +321,13 @@ public:
 		cout << "주소를 입력하세요->";
 		cin >> Address;
 
-		StudentManager Manager;
+		File_Manager_Student Manager;
+
 		student a(Id, Name, Sex, Grade, Age, Email, PhoneNum, Address);
 
 		Manager.AddStudent(a);
 
-		MoveFirst();*/
+		Manager.MoveFirst();
 	}
 
 	void deleteData()
@@ -200,7 +346,6 @@ public:
 	void insertData(Subject subjectData)
 	{	//classCode, className, professor, grade, timePlan, classified, evalType
 			//::해야할 것::
-			// 사용자가 특정 키를 누르면 입력 멈춤
 			// 중복 방지
 
 		string classCode;
@@ -220,7 +365,8 @@ public:
 			out.open("test.txt");
 		}*/
 
-		for (int i = 0; i < 2; i++) { //for문 > 사용자 특정키로 멈추게 하는 거 추가
+		for (int i = 0; i < 2; i++)
+		{
 			cout << "과목코드(A1111)->";
 			cin >> classCode;
 			out << classCode << " ";
@@ -252,7 +398,8 @@ public:
 		char ch;
 		cout << "입력한 데이터를 보시겠습니까?('Y/N') ";
 		cin >> ch;
-		if (ch == 'Y' || ch == 'y') {
+		if (ch == 'Y' || ch == 'y')
+		{
 			cout << "::작성한 과목 데이터 목록::" << endl;
 			string open_file; //임시 데이터 저장 공간
 			ifstream read_file; //파일 읽는 함수
@@ -268,7 +415,8 @@ public:
 			}
 			read_file.close();
 		}
-		else if (ch == 'N' || ch == 'n') {
+		else if (ch == 'N' || ch == 'n')
+		{
 			cout << "Good bye";
 		}
 
@@ -286,66 +434,56 @@ public:
 class CourseManager : TableManager
 {
 public:
-	bool createTable(TABLE table) {}
-
 	void insertData()
 	{
-		//file.open("") //파일 열기
-		//	cout << endl;
+		string studentId;
+		string classCode;
+		string className;
+		string professor;
+		string timePlan;
+		string location;
 
-		////index ???
-		//file.getline(StudentID, 8, ',');         //학번
-		//file.getline(name, 5, ',');              //이름
-		//file.getline(subjectcode, 5, ',');       //과목코드
-		//file.getline(subjectname, 20, ',');      //과목명
-		//file.getline(professor, 5, ',');         //교수
-		//file.getline(time, 5, ',');              //시간
-		//file.getline(place, 7, '\n');            //장소
+		int i;
 
+		string out_line;
+		ofstream fout;
+		ofstream out("course.txt");
 
-		//cout << endl << "학번을 입력하시오 : ";            //학번 입력 받기
-		//cin >> StudenID;
+		for (i = 0; i < 2; i++) // i 범위..? <<값이 제대로 들어가는지 확인을 위해 i를 2번 증가시켰습니다
+		{
+			cout << i + 1 << "번째 수강 정보를 입력하시오." << endl;
 
-		//cout << endl << "성명을 입력하시오 : ";            //이름 입력 받기
-		//cin >> name;
+			cout << endl << "학번을 입력하시오 : ";            //학번 입력 받기
+			cin >> studentId;
 
-		//cout << endl << "과목 코드를 입력하시오 : ";       //과목코드 입력 받기
-		//cin >> subjectcode;
+			cout << endl << "과목 코드를 입력하시오 : ";      //과목코드 입력 받기
+			cin >> classCode;
 
-		//cout << endl << "과목 이름을 입력하시오 : ";       //과목이름 입력 받기
-		//cin >> subjectname;
+			cout << endl << "과목 이름을 입력하시오 : ";       //과목이름 입력 받기
+			cin >> className;
 
-		//cout << endl << "교수명을 입력하시오 : ";          //교수명 입력 받기
-		//cin >> professor;
+			cout << endl << "교수명을 입력하시오 : ";          //교수명 입력 받기
+			cin >> professor;
 
-		//cout << endl << "수업 시간을 입력하시오 : ";       //수업 시간 입력 받기
-		//cin >> time;
+			cout << endl << "수업 시간을 입력하시오 : ";       //수업 시간 입력 받기
+			cin >> timePlan;
 
-		//cout << endl << "수업 장소를 입력하시오 : ";       //수업 장소 입력 받기
-		//cin >> place;
+			cout << endl << "수업 장소를 입력하시오 : ";       //수업 장소 입력 받기
+			cin >> location;
 
-		//cout << endl;
-		//file << StudenID << "," << name << "," << subjectcode << "," << subjectname << "," << professor << "," << time << "," << place << "\n";  // myfile에 입력받은 정보 저장하기
-
-		//file.close(); //파일 닫기
-
-
-		//완벽한 코드 아님
-		//어떤 파일을 여닫을 것인지, 어떻게 입력받아야할지 구상해야함.
+			fout << studentId << "," << classCode << "," << className << "," << professor << "," << timePlan << "," << location << endl;
+			cout << endl << studentId << "," << classCode << "," << className << "," << professor << "," << timePlan << "," << location << endl;
+		}
 	}
 
 	void deleteData()
 	{
-		//insert와 비슷한 코드
-	   //어떤 파일을 여닫을 것인지, 어떻게 삭제할 것인지 구상해야함.
-	   //삭제할 때 사용자가 기본키만 입력해도 삭제되는지, 정보를 다 입력해야하는지 생각해야함.
+
 	}
 
 	void updateData()
 	{
-		//insert와 비슷한 코드
-		//어떤 파일을 여닫을 것인지, 어떻게 수정할 것인지 구상해야함.
-		//수정할 떄 사용자가 수정할 부분만 입력해도 되는지, 다 입력해야하는지 생각해야함.    ex) 이름만 수정하고 싶을 때는 이름만 수정할 수 있는지..??
+
 	}
 };
 

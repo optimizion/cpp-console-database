@@ -19,6 +19,7 @@ public:
 	void clearConsole();
 	void printStart();
 	void printSignIn(string id);
+	void printSelectInfo();
 	void printExit();
 	bool checkLogin(string id, string pw);
 };
@@ -60,7 +61,7 @@ int main()
 			{
 				intranet->clearConsole();
 				intranet->printSignIn(studentId);
-				user_input = 0;
+				int user_input;
 				cout << "Enter number : ";
 				cin >> user_input;
 
@@ -113,15 +114,55 @@ int main()
 
 					// check login
 					bool isSuccess = intranet->checkLogin(studentId, studentPw);
+					sleep_for(seconds(2));
 					if (isSuccess)
 					{
 						// login successed.
-						sleep_for(seconds(2));
+						// SELECT INFO CONSOLE
+						intranet->clearConsole();
+						intranet->printSelectInfo();
+
+						// user_input
+						int user_input;
+						cout << "Enter number : ";
+						cin >> user_input;
+
+						// 입력에 따라 정보 출력
+						while (true)
+						{
+							// 학생 정보 출력
+							if (user_input == 1)
+							{
+							}
+							// 과목 정보 출력
+							else if (user_input == 2)
+							{
+							}
+							// 수강 정보 출력
+							else if (user_input == 3)
+							{
+							}
+							// go back
+							else if (user_input == 4)
+							{
+							}
+							// wrong input
+							else
+							{
+							}
+						}
+
 					}
 					else
 					{
 						// login failed.
 						sleep_for(seconds(2));
+						// 로그인에 실패하였습니다. 다시 시도해주세요. -> 반복
+						cout << "Login failed. Please try again.\n";
+						cin.clear();
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						sleep_for(seconds(1));
+
 					}
 				}
 				// go back
@@ -133,7 +174,7 @@ int main()
 				else
 				{
 					// wrong input
-					cout << "wrong input. Please retry.\n";
+					cout << "wrong input. Please try again.\n";
 					cin.clear();
 					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					sleep_for(seconds(1));
@@ -166,7 +207,7 @@ int main()
 
 bool Intranet::checkLogin(string id, string pw)
 {
-	char ID[10], PW[10], line[100];
+	/*char ID[10], PW[10], line[100];
 	int i, j;
 	cout << "아이디(학번)을 입력하세요";
 	cin >> ID;
@@ -176,7 +217,14 @@ bool Intranet::checkLogin(string id, string pw)
 	FILE* fp;
 	fp = fopen("student.txt", "r");
 	for (i = 0; i < 4; i++)
-		fclose(fp);
+		fclose(fp);*/
+
+		// loginInfo.txt의 내용을 한 줄씩 읽어서
+		// 값을 파싱한 다음에
+		// 각각의 값을 id, pw와 비교하여 같은 값이 있으면 true
+		// 없으면 false를 반환한다
+
+	return true;
 }
 
 void Intranet::clearConsole()
@@ -220,6 +268,24 @@ void Intranet::printSignIn(string id)
 	cout << "|              3. Login                     |\n";
 	cout << "|              4. Go Back                   |\n";
 	cout << "|                                           |\n";
+	cout << "`-------------------------------------------'\n";
+}
+
+void Intranet::printSelectInfo()
+{
+	cout << ",-------------------------------------------.\n";
+	cout << "|                                           |\n";
+	cout << "|       ,---------------------------.       |\n";
+	cout << "|       |                           |       |\n";
+	cout << "|       |    Welcome to Intranet    |       |\n";
+	cout << "|       |                           |       |\n";
+	cout << "|       | What do you want to know? |       |\n";
+	cout << "|       |                           |       |\n";
+	cout << "|       `---------------------------'       |\n";
+	cout << "|              1. Student Info              |\n";
+	cout << "|              2. Subject Info              |\n";
+	cout << "|              3. Course  Info              |\n";
+	cout << "|              4. Logout                   |\n";
 	cout << "`-------------------------------------------'\n";
 }
 
