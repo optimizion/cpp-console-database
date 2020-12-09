@@ -141,6 +141,11 @@
   <ItemGroup>
     <ClCompile Include="Intranet.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ManagaDatabase\ManagaDatabase.vcxproj">
+      <Project>{7702f39d-e17a-448f-800b-2b55ce5cde0a}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

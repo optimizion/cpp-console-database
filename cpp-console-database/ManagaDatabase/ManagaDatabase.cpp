@@ -4,11 +4,11 @@
 #include <string>
 #include <thread>
 #include <chrono>
-#include "ManageTable.h"
 #include <direct.h>
 #include <io.h>
 #include <vector>
 #include <sstream>
+#include "ManageTable.cpp"
 
 using namespace std;
 using namespace std::this_thread;
