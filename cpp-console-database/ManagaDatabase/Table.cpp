@@ -1,7 +1,7 @@
 #include "Table.h"
 
 Student::Student() {}
-Student::Student(string studentId, string name, char sex, short grade, short age, string email, string phoneNum, string address)
+Student::Student(string studentId, string name, string sex, short grade, short age, string email, string phoneNum)
 {
 	this->studentId = studentId;
 	this->name = name;
@@ -10,28 +10,25 @@ Student::Student(string studentId, string name, char sex, short grade, short age
 	this->age = age;
 	this->email = email;
 	this->phoneNum = phoneNum;
-	this->address = address;
 };
 
 // student getter
 string Student::getStudentId() { return this->studentId; }
 string Student::getName() { return this->name; }
-char   Student::getSex() { return this->sex; }
+string Student::getSex() { return this->sex; }
 short  Student::getGrade() { return this->grade; }
 short  Student::getAge() { return this->age; }
 string Student::getEmail() { return this->email; }
 string Student::getPhoneNum() { return this->phoneNum; }
-string Student::getAddress() { return this->address; }
 
 // student setter
 void Student::setStudentId(string id) { this->studentId = id; }
 void Student::setName(string name) { this->name = name; }
-void Student::setSex(char sex) { this->sex = sex; }
+void Student::setSex(string sex) { this->sex = sex; }
 void Student::setGrade(short grade) { this->grade = grade; }
 void Student::setAge(short age) { this->age = age; }
 void Student::setEmail(string email) { this->email = email; }
 void Student::setPhoneNum(string phoneNum) { this->phoneNum = phoneNum; }
-void Student::setAddress(string address) { this->address = address; }
 
 Subject::Subject() {}
 Subject::Subject(string classCode, string className, string professor, int grade, string timePlan, string classified, string evalType)

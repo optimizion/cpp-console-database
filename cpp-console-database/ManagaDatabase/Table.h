@@ -7,35 +7,32 @@ private:
 	// NOT NULL
 	string studentId; // 학번 -> PK (0 < length <= 10자리 이하)
 	string name; // 이름 (0 < length)
-	char sex; // 성별 (default m)
+	string sex; // 성별 (default m)
 	short grade; // 학년 (default 1)
 	short age; // 나이 (default 20)
 
 	// NULLABLE
 	string email; // 이메일 (must include @)
 	string phoneNum; // 연락처 (not include - )
-	string address; // 주소
 public:
 	Student();
-	Student(string studentId, string name, char sex = 'm', short grade = 1, short age = 20, string email = NULL, string phoneNum = NULL, string address = NULL);
+	Student(string studentId, string name, string sex = "m", short grade = 1, short age = 20, string email = NULL, string phoneNum = NULL);
 
 	string getStudentId();
 	string getName();
-	char getSex();
+	string getSex();
 	short getGrade();
 	short getAge();
 	string getEmail();
 	string getPhoneNum();
-	string getAddress();
 
 	void setStudentId(string id);
 	void setName(string name);
-	void setSex(char sex);
+	void setSex(string sex);
 	void setGrade(short grade);
 	void setAge(short age);
 	void setEmail(string email);
 	void setPhoneNum(string phoneNum);
-	void setAddress(string address);
 };
 
 class Subject

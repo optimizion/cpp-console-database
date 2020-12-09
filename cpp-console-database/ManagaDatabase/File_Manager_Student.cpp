@@ -212,3 +212,63 @@ void File_Manager_Student::ShowTable()
 
 	MoveFirst();
 }
+
+//해당 Id를 가진 학생을 Id와 비교하여 해당 줄을 제거하거나 변경 (Id값은 변경되지 않습니다.)
+bool File_Manager_Student::Update(string Id, student* Correct = NULL)
+{
+	MoveFirst();
+
+	bool TargetIsFound = false;	//변경 대상 여부
+	int RowCount = GetCount();
+	student* Check = NULL;
+
+	if (RowCount == 0)
+		return false;
+
+	string Buffer("h[학번,이름,성별,학년,나이,이메일,연락처,주소]\n");
+
+	//하나씩 비교하면서 제거하거나 변경할 것을 제외해서 임시 저장 공간 Buffer에 파일 내용을 담는다.
+	for (int i = 0; i < RowCount; i++)
+	{
+		//학생 객체를 동적으로 하나씩 만들면서 비교
+		Check = GetStudent();
+		if (Check->GetId() == Id)
+		{
+			TargetIsFound = true;
+			delete Check;
+			MoveNext();
+			continue;
+		}
+		delete Check;
+
+		Buffer += CurrentRow() + "\n";
+
+		MoveNext();
+	}
+	if (!TargetIsFound)
+		return false;
+
+	//새 파일 열어서 쓰기 (파일에 쓴 거 지우는 기능을 몰라서 완전히 비어있는 새 파일 열어서 쓰겠습니다...)
+	fout.close();
+	fin.close();
+	fout.open("파일_학생.txt");
+	fin.open("파일_학생.txt", 1);
+	fout << Buffer;
+
+	//수정이라면 해당 Id로 수정된 내용으로 쓰기
+	if (Correct != NULL)
+	{
+		fout << "["
+			<< Id << ","
+			<< Correct->GetName() << ","
+			<< Correct->GetSex() << ","
+			<< Correct->GetGrade() << ","
+			<< Correct->GetAge() << ","
+			<< Correct->GetEmail() << ","
+			<< Correct->GetPhoneNum() << ","
+			<< Correct->GetAddress() << "]\n";
+
+	}
+	MoveFirst();
+	return true;
+}

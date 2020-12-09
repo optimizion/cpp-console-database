@@ -7,65 +7,367 @@
 #include "ManageTable.h"
 #include <direct.h>
 #include <io.h>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
 
+// 데이터베이스 관리 클래스
 class ManageDatabase
 {
 private:
-
+	StudentManager studentManager;
+	SubjectManager subjectManager;
+	CourseManager courseManager;
+	LoginInfoManager loginInfoManager;
 public:
+	ManageDatabase() {}
 	//테이블을 모아둘 폴더 생성
-	bool hasDirectory();
-	bool makeDirectory();
-	Student inputStudentData();
-	Subject inputSubjectData();
-	Course inputCourseData();
-};
-bool ManageDatabase::hasDirectory()
-{
-	if (_waccess(L"./table", 0) != 0)
+	bool hasDirectory()
 	{
+		if (_waccess(L"./table", 0) != 0)
+		{
+			return false;
+		}
+		return true;
+	}
+	bool makeDirectory()
+	{
+		if (_mkdir("./table") != 0)
+		{
+			return false;
+		}
+		return true;
+	}
+	bool inputStudentData()
+	{
+		ifstream fin;
+		fin.open("./table/student.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+
+		// 예외처리 필요
+		Student student = Student();
+		string studentId, name, email, phoneNum, sex;
+		short grade, age;
+
+		cout << "ex)학번,이름,성별,학년,나이,이메일,휴대폰번호('-'제외)\n";
+		cout << "Enter data : ";
+		vector<string> results;
+		string str;
+		cin >> str;
+		stringstream ss(str);
+
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+		student.setStudentId(results[0]);
+		student.setName(results[1]);
+		student.setSex(results[2]);
+		student.setGrade(stoi(results[3]));
+		student.setAge(stoi(results[4]));
+		student.setEmail(results[5]);
+		student.setPhoneNum(results[6]);
+
+		studentManager.insertData(student);
+		return true;
+	}
+	bool inputSubjectData()
+	{
+		ifstream fin;
+		fin.open("./table/subject.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+
+		// 예외처리 필요
+		Subject subject = Subject();
+		string classCode, className, professor, timePlan, classified, evalType;
+		int grade;
+
+		cout << "ex)과목코드,과목명,교수명,학점,시간표(화(789)),이수구분(전공 or 교양),평가유형(상대평가 or 절대평가)\n";
+		cout << "Enter data : ";
+		vector<string> results;
+		string str;
+		cin >> str;
+		stringstream ss(str);
+
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+		subject.setClassCode(results[0]);
+		subject.setClassName(results[1]);
+		subject.setProfessor(results[2]);
+		subject.setGrade(stoi(results[3]));
+		subject.setTimePlan(results[4]);
+		subject.setClassified(results[5]);
+		subject.setEvalType(results[6]);
+
+		subjectManager.insertData(subject);
+		return true;
+	}
+	bool inputCourseData()
+	{
+		ifstream fin;
+		fin.open("./table/course.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+
+		// 예외처리 필요
+		Course course = Course();
+		string studentId, classCode, className, professor, timePlan, location;
+
+		cout << "ex)학번,과목코드,과목명,교수명,시간표(화(789)),강의실(아(605))\n";
+		cout << "Enter data : ";
+		vector<string> results;
+		string str;
+		cin >> str;
+		stringstream ss(str);
+
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+
+		course.setStudentId(results[0]);
+		course.setClassCode(results[1]);
+		course.setClassName(results[2]);
+		course.setProfessor(results[3]);
+		course.setTimePlan(results[4]);
+		course.setLocation(results[5]);
+		courseManager.insertData(course);
+		return true;
+	}
+	bool inputLoginInfoData()
+	{
+		ifstream fin;
+		fin.open("./table/loginInfo.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+
+		// 예외처리 필요
+		LoginInfo loginInfo = LoginInfo();
+		string studentId, password;
+		//string user_input;
+		cout << "ex)학번,비밀번호\n";
+		cout << "Enter data : ";
+		vector<string> results;
+		string str;
+		cin >> str;
+		stringstream ss(str);
+
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+
+
+		loginInfo.setStudentId(results[0]);
+		loginInfo.setPassword(results[1]);
+		loginInfoManager.insertData(loginInfo);
+		return true;
+	}
+	bool updateStudentData()
+	{
+		ifstream fin;
+		fin.open("./table/student.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+
+		string studentId;
+		cout << "학번 입력 : ";
+		cin >> studentId;
+
+		bool isSuccessed = studentManager.updateData(studentId);
+		if (isSuccessed)
+		{
+			return true;
+		}
 		return false;
 	}
-	return true;
-}
-
-bool ManageDatabase::makeDirectory()
-{
-	if (_mkdir("./table") != 0)
+	bool updateSubjectData()
 	{
+		ifstream fin;
+		fin.open("./table/subject.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+
+		string classCode;
+		cout << "과목번호 입력 : ";
+		cin >> classCode;
+
+		bool isSuccessed = subjectManager.updateData(classCode);
+		if (isSuccessed)
+		{
+			return true;
+		}
 		return false;
 	}
-	return true;
-}
-Student ManageDatabase::inputStudentData()
-{
-	Student student = Student();
-	string studentId, name, email = NULL, phoneNum = NULL, address = NULL;
-	char sex;
-	short grade, age;
+	bool updateCourseData()
+	{
+		ifstream fin;
+		fin.open("./table/course.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
 
-	return student;
+		string studentId, classCode;
+		cout << "학번 입력 : ";
+		cin >> studentId;
+		cout << "과목코드 입력 : ";
+		cin >> classCode;
+
+		bool isSuccessed = courseManager.updateData(studentId, classCode);
+		if (isSuccessed)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool updateLoginInfoData()
+	{
+		ifstream fin;
+		fin.open("./table/loginInfo.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+		string studentId;
+		cout << "학번 입력 : ";
+		cin >> studentId;
+
+		bool isSuccessed = loginInfoManager.updatePassword(studentId);
+		if (isSuccessed)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool deleteStudentData()
+	{
+		ifstream fin;
+		fin.open("./table/student.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+		fin.close();
+		string studentId;
+		cout << "학번 입력 : ";
+		cin >> studentId;
+
+		bool isSuccessed = studentManager.deleteData(studentId);
+		if (isSuccessed)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool deleteSubjectData()
+	{
+		ifstream fin;
+		fin.open("./table/subject.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+		fin.close();
+		string classCode;
+		cout << "과목코드 입력 : ";
+		cin >> classCode;
+
+		bool isSuccessed = subjectManager.deleteData(classCode);
+		if (isSuccessed)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool deleteCourseData()
+	{
+		ifstream fin;
+		fin.open("./table/course.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+		fin.close();
+		string studentId, classCode;
+		cout << "학번 입력 : ";
+		cin >> studentId;
+		cout << "과목코드 입력 : ";
+		cin >> classCode;
+
+		bool isSuccessed = courseManager.deleteData(studentId, classCode);
+		if (isSuccessed)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool deleteLoginInfoData()
+	{
+		ifstream fin;
+		fin.open("./table/loginInfo.txt");
+		if (!fin)
+		{
+			cout << "파일이 존재하지 않습니다.\n";
+			sleep_for(seconds(1));
+			return false;
+		}
+		fin.close();
+		string studentId;
+		cout << "학번 입력 : ";
+		cin >> studentId;
+
+		bool isSuccessed = loginInfoManager.deleteData(studentId);
+		if (isSuccessed)
+		{
+			return true;
+		}
+		return false;
+	}
 };
-Subject ManageDatabase::inputSubjectData()
-{
-	Subject subject = Subject();
-	string classCode, className, professor, timePlan, classified, evalType;
-	int grade;
 
-	return subject;
-};
-Course ManageDatabase::inputCourseData()
-{
-	Course course = Course();
-	string studentId, classCode, className, professor, timePlan, location;
-
-	return course;
-};
-
+// 콘솔 처리 클래스
 class Console
 {
 public:
@@ -200,7 +502,6 @@ public:
 		cout << "|       `---------------------------'       |\n";
 		cout << "|                                           |\n";
 		cout << "`-------------------------------------------'\n";
-		cout << "ex)학번, 이름, 성별, 학년, 나이, 이메일, 휴대폰번호('-'제외), 주소\n";
 	}
 	void printInsertSubjectData()
 	{
@@ -214,7 +515,6 @@ public:
 			cout << "|       `---------------------------'       |\n";
 			cout << "|                                           |\n";
 			cout << "`-------------------------------------------'\n";
-			cout << "ex)과목코드, 과목명, 교수명, 학점, 시간표(화(7,8,9)), \n이수구분(전공 or 교양), 평가유형(상대평가 or 절대평가)\n";
 		}
 	}
 	void printInsertCourseData()
@@ -229,8 +529,19 @@ public:
 			cout << "|       `---------------------------'       |\n";
 			cout << "|                                           |\n";
 			cout << "`-------------------------------------------'\n";
-			cout << "ex)학번, 과목코드, 과목명, 교수명, 시간표(화(7,8,9)), 강의실\n";
 		}
+	}
+	void printInsertLoginInfoData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |   Insert LoginInfo Data   |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
 	}
 	void printUpdateStudentData()
 	{
@@ -263,6 +574,18 @@ public:
 		cout << "|       ,---------------------------.       |\n";
 		cout << "|       |                           |       |\n";
 		cout << "|       |    Update Course Data     |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateLoginInfoData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |   Update LoginInfo Data   |       |\n";
 		cout << "|       |                           |       |\n";
 		cout << "|       `---------------------------'       |\n";
 		cout << "|                                           |\n";
@@ -304,8 +627,21 @@ public:
 		cout << "|                                           |\n";
 		cout << "`-------------------------------------------'\n";
 	}
+	void printDeleteLoginInfoData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |   Delete LoginInfo Data   |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
 };
 
+// 데이터베이스 관리 프로그램 시작
 int main()
 {
 	ManageDatabase manageDatabase;
@@ -319,7 +655,7 @@ int main()
 		console.printConsole(Console::TYPE::MAIN);
 
 		// user_input
-		int user_input;
+		int user_input = 0;
 		cout << "Enter number : ";
 		cin >> user_input;
 
@@ -333,7 +669,7 @@ int main()
 				console.printConsole(Console::TYPE::MANAGE_TABLE);
 
 				// user_input
-				int user_input;
+				int user_input = 0;
 				cout << "Enter number : ";
 				cin >> user_input;
 
@@ -346,16 +682,19 @@ int main()
 					console.printConsole(Console::TYPE::SELECT_TABLE);
 
 					// 번호를 입력받고, 해당하는 테이블을 만든다
-					int user_input;
+					int user_input = 0;
 					cout << "Enter number : ";
 					cin >> user_input;
 					TableManager::TABLE table;
 					// create student table
 					if (user_input == 1)
 					{
-						if (manageDatabase.hasDirectory())
+						if (!manageDatabase.hasDirectory())
 						{
-							manageDatabase.makeDirectory();
+							if (manageDatabase.makeDirectory())
+							{
+								sleep_for(seconds(1));
+							}
 						}
 						table = TableManager::TABLE::STUDENT;
 						tableManager.createTable(table);
@@ -364,9 +703,13 @@ int main()
 					// create subject table
 					else if (user_input == 2)
 					{
-						if (manageDatabase.hasDirectory())
+						if (!manageDatabase.hasDirectory())
 						{
-							manageDatabase.makeDirectory();
+							if (manageDatabase.makeDirectory())
+							{
+								cout << "폴더가 생성되었습니다.\n";
+								sleep_for(seconds(1));
+							}
 						}
 						table = TableManager::TABLE::SUBJECT;
 						tableManager.createTable(table);
@@ -375,9 +718,13 @@ int main()
 					// create course table
 					else if (user_input == 3)
 					{
-						if (manageDatabase.hasDirectory())
+						if (!manageDatabase.hasDirectory())
 						{
-							manageDatabase.makeDirectory();
+							if (manageDatabase.makeDirectory())
+							{
+								cout << "폴더가 생성되었습니다.\n";
+								sleep_for(seconds(1));
+							}
 						}
 						table = TableManager::TABLE::COURSE;
 						tableManager.createTable(table);
@@ -386,9 +733,13 @@ int main()
 					// create loginInfo table
 					else if (user_input == 4)
 					{
-						if (manageDatabase.hasDirectory())
+						if (!manageDatabase.hasDirectory())
 						{
-							manageDatabase.makeDirectory();
+							if (manageDatabase.makeDirectory())
+							{
+								cout << "폴더가 생성되었습니다.\n";
+								sleep_for(seconds(1));
+							}
 						}
 						table = TableManager::TABLE::LOGIN_INFO;
 						tableManager.createTable(table);
@@ -418,7 +769,7 @@ int main()
 					console.printConsole(Console::TYPE::SELECT_TABLE);
 
 					// 번호를 입력받고, 해당하는 테이블을 삭제한다
-					int user_input;
+					int user_input = 0;
 					cout << "Enter number : ";
 					cin >> user_input;
 
@@ -494,7 +845,7 @@ int main()
 				console.clearConsole();
 				console.printConsole(Console::TYPE::SELECT_TABLE);
 				// user_input
-				int user_input;
+				int user_input = 0;
 				cout << "Enter number : ";
 				cin >> user_input;
 				// clear console, show manage table data console
@@ -503,25 +854,67 @@ int main()
 				// student table
 				if (user_input == 1)
 				{
-					StudentManager studentManager;
 					// user_input
-					int user_input;
+					int user_input = 0;
 					cout << "Enter number : ";
 					cin >> user_input;
 					// insert data
 					if (user_input == 1)
 					{
-						//Student student = manageDatabase.inputStudentData();
-						//StudentManager.insertData(student);
+						console.clearConsole();
+						console.printInsertStudentData();
+						// 데이터 삽입에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.inputStudentData();
+
+						if (isSuccessed)
+						{
+							cout << "데이터 삽입에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+							break;
+						}
+						else
+						{
+							cout << "데이터 삽입에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+							break;
+						}
+
 					}
 					// update data
 					else if (user_input == 2)
 					{
-						//Subject subject = manageDatabase.inputSubjectData();
+						console.clearConsole();
+						console.printUpdateStudentData();
+						// 데이터 수정에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.updateStudentData();
+						if (isSuccessed)
+						{
+							cout << "데이터 수정에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 수정에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// delete data
 					else if (user_input == 3)
 					{
+						console.clearConsole();
+						console.printDeleteStudentData();
+						// 데이터 삭제에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.deleteStudentData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삭제에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 삭제에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// go back
 					else if (user_input == 4)
@@ -541,25 +934,64 @@ int main()
 				// subject table
 				else if (user_input == 2)
 				{
-					SubjectManager subjectManager;
 					// user_input
-					int user_input;
+					int user_input = 0;
 					cout << "Enter number : ";
 					cin >> user_input;
 					// insert data
 					if (user_input == 1)
 					{
-						//SubjectManager.insertData();
+						console.clearConsole();
+						console.printInsertSubjectData();
+						// 데이터 삽입에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.inputSubjectData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삽입에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 삽입에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+
 					}
 					// update data
 					else if (user_input == 2)
 					{
-						//SubjectManager.updateData();
+						console.clearConsole();
+						console.printUpdateSubjectData();
+						// 데이터 수정에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.updateSubjectData();
+						if (isSuccessed)
+						{
+							cout << "데이터 수정에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 수정에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// delete data
 					else if (user_input == 3)
 					{
-						//SubjectManager.deleteData();
+						console.clearConsole();
+						console.printDeleteSubjectData();
+						// 데이터 삭제에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.deleteSubjectData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삭제에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 삭제에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// go back
 					else if (user_input == 4)
@@ -581,23 +1013,62 @@ int main()
 				{
 					CourseManager courseManager;
 					// user_input
-					int user_input;
+					int user_input = 0;
 					cout << "Enter number : ";
 					cin >> user_input;
 					// insert data
 					if (user_input == 1)
 					{
-						//CourseManager.insertData();
+						console.clearConsole();
+						console.printInsertCourseData();
+						// 데이터 삽입에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.inputCourseData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삽입에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 삽입에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// update data
 					else if (user_input == 2)
 					{
-						//CourseManager.updateData();
+						console.clearConsole();
+						console.printUpdateCourseData();
+						// 데이터 수정에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.updateCourseData();
+						if (isSuccessed)
+						{
+							cout << "데이터 수정에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 수정에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// delete data
 					else if (user_input == 3)
 					{
-						//CourseManager.deleteData();
+						console.clearConsole();
+						console.printDeleteCourseData();
+						// 데이터 삭제에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.deleteCourseData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삭제에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 삭제에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// go back
 					else if (user_input == 4)
@@ -619,23 +1090,64 @@ int main()
 				{
 					LoginInfoManager loginInfoManager;
 					// user_input
-					int user_input;
+					int user_input = 0;
 					cout << "Enter number : ";
 					cin >> user_input;
 					// insert data
 					if (user_input == 1)
 					{
-						//LoginInfoManager.insertData();
+						console.clearConsole();
+						console.printInsertLoginInfoData();
+						// 데이터 삽입에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.inputLoginInfoData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삽입에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+							break;
+						}
+						else
+						{
+							cout << "데이터 삽입에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+							break;
+						}
 					}
 					// update data
 					else if (user_input == 2)
 					{
-						//LoginInfoManager.updateData();
+						console.clearConsole();
+						console.printUpdateLoginInfoData();
+						// 데이터 수정에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.updateLoginInfoData();
+						if (isSuccessed)
+						{
+							cout << "데이터 수정에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 수정에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// delete data
 					else if (user_input == 3)
 					{
-						//LoginInfoManager.deleteData();
+						console.clearConsole();
+						console.printDeleteLoginInfoData();
+						// 데이터 삭제에 성공하면 true, 실패하면 false 반환
+						bool isSuccessed = manageDatabase.deleteLoginInfoData();
+						if (isSuccessed)
+						{
+							cout << "데이터 삭제에 성공하였습니다.\n";
+							sleep_for(seconds(1));
+						}
+						else
+						{
+							cout << "데이터 삭제에 실패하였습니다.\n";
+							sleep_for(seconds(1));
+						}
 					}
 					// go back
 					else if (user_input == 4)
@@ -652,6 +1164,7 @@ int main()
 					}
 
 				}
+				// go back
 				else if (user_input == 5)
 				{
 					console.clearConsole();

@@ -24,5 +24,7 @@ public:
 	int GetCount();
 
 	void ShowTable();
+
+	bool Update(string Id, student* Correct);
 };
 
