@@ -29,6 +29,7 @@ public:
 	void printCourseInfo();
 };
 
+// 싱글톤 구현
 Intranet::Intranet()
 {
 }
@@ -41,25 +42,10 @@ Intranet* Intranet::getInstance()
 	}
 	return instance;
 }
+
+// 인트라넷 메소드 및 콘솔 메소드
 bool Intranet::checkLogin(string id, string pw)
 {
-	/*char ID[10], PW[10], line[100];
-	int i, j;
-	cout << "아이디(학번)을 입력하세요";
-	cin >> ID;
-	cout << "비밀번호를 입력하세요(무조건 8자리)";
-	cin >> PW;
-
-	FILE* fp;
-	fp = fopen("student.txt", "r");
-	for (i = 0; i < 4; i++)
-		fclose(fp);*/
-
-		// loginInfo.txt의 내용을 한 줄씩 읽어서
-		// 값을 파싱한 다음에
-		// 각각의 값을 id, pw와 비교하여 같은 값이 있으면 true
-		// 없으면 false를 반환한다
-
 	LoginInfoManager loginInfoManager;
 	bool isSuccessed = loginInfoManager.checkLogin(id, pw);
 
@@ -119,7 +105,7 @@ void Intranet::printSelectInfo(string userName)
 	cout << "|       |    Welcome to Intranet    |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << left;
-	cout << "|       |   Hello, " << setw(9) << userName << "        |       |\n";
+	cout << "|       |     Hello, " << setw(9) << userName << "      |       |\n";
 	cout << "|       |                           |       |\n";
 	cout << "|       `---------------------------'       |\n";
 	cout << "|              1. Student Info              |\n";
@@ -282,12 +268,11 @@ int main()
 								Student student = studentManager.queryStudentData(studentId);
 								if (student.getStudentId() != "")
 								{
-									cout << "------------------------------------------------------------------------------------------------------" << endl;
-									cout << "StudentId" << " | " << "Name" << " | " << "Sex" << " | " << "Grade" << " | " << "Age" << " | " << "Email" << " | " << "PhoneNumber" << " | " << endl;
-									cout << "------------------------------------------------------------------------------------------------------" << endl;
-									cout << student.getStudentId() << " | " << student.getName() << " | " << student.getSex() << " | " << student.getGrade() << " | " << student.getAge() << " | " << student.getEmail() << " | " << student.getPhoneNum() << endl;
-
-									sleep_for(seconds(3));
+									cout << "--------------------------------------------------------------" << endl;
+									cout << "| StudentId" << " | " << "Name" << " | " << "Sex" << " | " << "Grade" << " | " << "Age" << " | " << "Email" << " | " << "PhoneNumber |" << endl;
+									cout << "--------------------------------------------------------------" << endl;
+									cout << "| " << student.getStudentId() << " | " << student.getName() << " | " << student.getSex() << " | " << student.getGrade() << " | " << student.getAge() << " | " << student.getEmail() << " | " << student.getPhoneNum() << " |" << endl;
+									system("pause");
 									//cout << endl << "Press Enter to Continue" << endl;
 									cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 									continue;
@@ -303,16 +288,16 @@ int main()
 								intranet->printSubjectInfo();
 								SubjectManager subjectManager;
 								string str;
-								stringstream subjects = subjectManager.querySubjectData();
 
-								cout << "------------------------------------------------------------------------------------------------------" << endl;
-								cout << "ClassCode" << " | " << "ClassName" << " | " << "Professor" << " | " << "Grade" << " | " << "TimePlan" << " | " << "Classified" << " | " << "EvalType" << " | " << endl;
-								cout << "------------------------------------------------------------------------------------------------------" << endl;
-								while (getline(subjects, str))
+								cout << "--------------------------------------------------------------------------------" << endl;
+								cout << "| ClassCode" << " | " << "ClassName" << " | " << "Professor" << " | " << "Grade" << " | " << "TimePlan" << " | " << "Classified" << " | " << "EvalType |" << endl;
+								cout << "--------------------------------------------------------------------------------" << endl;
+								/*while (getline(subjects, str))
 								{
 									cout << str << endl;
-								}
-								sleep_for(seconds(3));
+								}*/
+								subjectManager.querySubjectData();
+								system("pause");
 								//cout << "과목 정보가 존재하지 않습니다." << endl;
 								cout << endl << "Press Enter to Continue" << endl;
 								cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
@@ -325,17 +310,17 @@ int main()
 								intranet->printCourseInfo();
 								CourseManager courseManager;
 								string str;
-								stringstream courses = courseManager.queryCourseData(studentId);
-								cout << "------------------------------------------------------------------------------------------------------" << endl;
-								cout << "StudentId" << " | " << "ClassCode" << " | " << "ClassName" << " | " << "Professor" << " | " << "TimePlan" << " | " << "location" << endl;
-								cout << "------------------------------------------------------------------------------------------------------" << endl;
+								cout << "-----------------------------------------------------------------------" << endl;
+								cout << "| StudentId" << " | " << "ClassCode" << " | " << "ClassName" << " | " << "Professor" << " | " << "TimePlan" << " | " << "location |" << endl;
+								cout << "-----------------------------------------------------------------------" << endl;
 
-								while (getline(courses, str))
+								/*while (getline(courses, str))
 								{
 									cout << str << endl;
-								}
-								sleep_for(seconds(3));
+								}*/
+								courseManager.queryCourseData(studentId);
 
+								system("pause");
 								cout << endl << "Press Enter to Continue" << endl;
 								cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 								continue;

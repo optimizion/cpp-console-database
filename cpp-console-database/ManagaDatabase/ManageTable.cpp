@@ -97,6 +97,7 @@ string LoginInfo::getPassword() { return password; }
 void LoginInfo::setStudentId(string studentId) { this->studentId = studentId; }
 void LoginInfo::setPassword(string password) { this->password = password; }
 
+
 TableManager::TableManager() {}
 void TableManager::createTable(TABLE table)
 {
@@ -723,30 +724,37 @@ bool SubjectManager::updateData(string classCode)
 	fout.close();
 	return false;
 }
-stringstream SubjectManager::querySubjectData()
+bool SubjectManager::querySubjectData()
 {
+	int first = 0;
 	ifstream fin;
 	string line, str;
 	stringstream returnStream;
 	fin.open("./table/subject.txt", ios::in);
 	while (getline(fin, line))
 	{
+		if (first == 0)
+		{
+			first++;
+			continue;
+		}
 		stringstream ss;
 		vector<string> results;
 		ss.str(line);
-		//cout << line << endl;
 		while (getline(ss, str, ','))
 		{
 			results.push_back(str);
 		}
-		if (results.empty() != 0)
+
+		cout << "| ";
+		for (int i = 0; i < results.size(); i++)
 		{
-			//Subject subject(results[0], results[1], results[2], stoi(results[3]), results[4], results[5], results[6]);
-			returnStream << results[0] << "|" << results[1] << "|" << results[2] << "|" << stoi(results[3]) << "|" << results[4] << "|" << results[5] << "|" << results[6] << " ";
+			cout << results[i] << " | ";
 		}
+		cout << endl;
 	}
 	fin.close();
-	return returnStream;
+	return true;
 }
 
 CourseManager::CourseManager() {}
@@ -880,14 +888,20 @@ bool CourseManager::updateData(string studentId, string classCode)
 	fout.close();
 	return false;
 }
-stringstream CourseManager::queryCourseData(string studentId)
+bool CourseManager::queryCourseData(string studentId)
 {
+	int first = 0;
 	ifstream fin;
 	string line, str;
 	stringstream returnStream;
 	fin.open("./table/course.txt", ios::in);
 	while (getline(fin, line))
 	{
+		if (first == 0)
+		{
+			first++;
+			continue;
+		}
 		stringstream ss;
 		vector<string> results;
 		ss.str(line);
@@ -897,14 +911,17 @@ stringstream CourseManager::queryCourseData(string studentId)
 		}
 		if (results[0] == studentId)
 		{
-			if (results.empty() != 0)
+			cout << "| ";
+			for (int i = 0; i < results.size(); i++)
 			{
-				returnStream << results[0] << "|" << results[1] << "|" << results[2] << "|" << stoi(results[3]) << "|" << results[4] << "|" << results[5] << " ";
+				cout << results[i] << " | ";
 			}
+			cout << endl;
 		}
+
 	}
 	fin.close();
-	return returnStream;
+	return true;
 }
 
 LoginInfoManager::LoginInfoManager() {}

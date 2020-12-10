@@ -166,7 +166,7 @@ public:
 	void insertData(Subject subjectData);
 	bool deleteData(string classCode);
 	bool updateData(string classCode);
-	stringstream querySubjectData();
+	bool querySubjectData();
 };
 class CourseManager : TableManager
 {
@@ -175,7 +175,7 @@ public:
 	void insertData(Course courseData);
 	bool deleteData(string studentId, string classCode);
 	bool updateData(string studentId, string classCode);
-	stringstream queryCourseData(string studentId);
+	bool queryCourseData(string studentId);
 };
 class LoginInfoManager : TableManager
 {

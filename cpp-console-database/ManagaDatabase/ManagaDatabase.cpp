@@ -8,11 +8,285 @@
 #include <io.h>
 #include <vector>
 #include <sstream>
-#include "ManageTable.cpp"
+#include "ManageTable.h"
 
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
+
+// 콘솔 관리 클래스
+class Console
+{
+public:
+	enum TYPE
+	{
+		MAIN,
+		MANAGE_TABLE,
+		SELECT_TABLE,
+		MANAGE_TABLE_DATA,
+		EXIT,
+		INSERT_STUDENT_DATA,
+		INSERT_SUBJECT_DATA,
+		INSERT_COURSE_DATA
+	};
+
+	void printConsole(TYPE console)
+	{
+		switch (console)
+		{
+		case Console::MAIN:
+			Console::printMain();
+			break;
+		case Console::MANAGE_TABLE:
+			Console::printManageTable();
+			break;
+		case Console::SELECT_TABLE:
+			Console::printSelectTable();
+			break;
+		case Console::MANAGE_TABLE_DATA:
+			Console::printManageTableData();
+			break;
+		case TYPE::EXIT:
+			Console::printExit();
+		default:
+			break;
+		}
+	}
+	void clearConsole()
+	{
+		system("cls");
+	}
+	void printMain()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |      Manage Database      |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "|              1. Manage Table              |\n";
+		cout << "|              2. Manage Table Data         |\n";
+		cout << "|              3. Exit                      |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printManageTable()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |        Manage Table       |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "|              1. Create Table              |\n";
+		cout << "|              2. Delete Table              |\n";
+		cout << "|              3. Go Back                   |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printManageTableData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |     Manage Table Data     |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "|              1. Insert Data               |\n";
+		cout << "|              2. Update Data               |\n";
+		cout << "|              3. Delete Data               |\n";
+		cout << "|              4. Go Back                   |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printSelectTable()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |        Select Table       |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "|              1. Student                   |\n";
+		cout << "|              2. Subject                   |\n";
+		cout << "|              3. Course                    |\n";
+		cout << "|              4. Login Info                |\n";
+		cout << "|              5. Go Back                   |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printExit()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |            Exit           |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |          Good Bye         |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printInsertStudentData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Insert Student Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printInsertSubjectData()
+	{
+		{
+			cout << ",-------------------------------------------.\n";
+			cout << "|                                           |\n";
+			cout << "|       ,---------------------------.       |\n";
+			cout << "|       |                           |       |\n";
+			cout << "|       |    Insert Subject Data    |       |\n";
+			cout << "|       |                           |       |\n";
+			cout << "|       `---------------------------'       |\n";
+			cout << "|                                           |\n";
+			cout << "`-------------------------------------------'\n";
+		}
+	}
+	void printInsertCourseData()
+	{
+		{
+			cout << ",-------------------------------------------.\n";
+			cout << "|                                           |\n";
+			cout << "|       ,---------------------------.       |\n";
+			cout << "|       |                           |       |\n";
+			cout << "|       |    Insert Course Data     |       |\n";
+			cout << "|       |                           |       |\n";
+			cout << "|       `---------------------------'       |\n";
+			cout << "|                                           |\n";
+			cout << "`-------------------------------------------'\n";
+		}
+	}
+	void printInsertLoginInfoData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |   Insert LoginInfo Data   |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateStudentData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Update Student Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateSubjectData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Update Subject Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateCourseData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Update Course Data     |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printUpdateLoginInfoData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |   Update LoginInfo Data   |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteStudentData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Delete Student Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteSubjectData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Delete Subject Data    |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteCourseData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |    Delete Course Data     |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+	void printDeleteLoginInfoData()
+	{
+		cout << ",-------------------------------------------.\n";
+		cout << "|                                           |\n";
+		cout << "|       ,---------------------------.       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       |   Delete LoginInfo Data   |       |\n";
+		cout << "|       |                           |       |\n";
+		cout << "|       `---------------------------'       |\n";
+		cout << "|                                           |\n";
+		cout << "`-------------------------------------------'\n";
+	}
+};
 
 // 데이터베이스 관리 클래스
 class ManageDatabase
@@ -364,280 +638,6 @@ public:
 			return true;
 		}
 		return false;
-	}
-};
-
-// 콘솔 처리 클래스
-class Console
-{
-public:
-	enum TYPE
-	{
-		MAIN,
-		MANAGE_TABLE,
-		SELECT_TABLE,
-		MANAGE_TABLE_DATA,
-		EXIT,
-		INSERT_STUDENT_DATA,
-		INSERT_SUBJECT_DATA,
-		INSERT_COURSE_DATA
-	};
-
-	void printConsole(TYPE console)
-	{
-		switch (console)
-		{
-		case Console::MAIN:
-			Console::printMain();
-			break;
-		case Console::MANAGE_TABLE:
-			Console::printManageTable();
-			break;
-		case Console::SELECT_TABLE:
-			Console::printSelectTable();
-			break;
-		case Console::MANAGE_TABLE_DATA:
-			Console::printManageTableData();
-			break;
-		case TYPE::EXIT:
-			Console::printExit();
-		default:
-			break;
-		}
-	}
-	void clearConsole()
-	{
-		system("cls");
-	}
-	void printMain()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |      Manage Database      |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "|              1. Manage Table              |\n";
-		cout << "|              2. Manage Table Data         |\n";
-		cout << "|              3. Exit                      |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printManageTable()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |        Manage Table       |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "|              1. Create Table              |\n";
-		cout << "|              2. Delete Table              |\n";
-		cout << "|              3. Go Back                   |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printManageTableData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |     Manage Table Data     |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "|              1. Insert Data               |\n";
-		cout << "|              2. Update Data               |\n";
-		cout << "|              3. Delete Data               |\n";
-		cout << "|              4. Go Back                   |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printSelectTable()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |        Select Table       |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "|              1. Student                   |\n";
-		cout << "|              2. Subject                   |\n";
-		cout << "|              3. Course                    |\n";
-		cout << "|              4. Login Info                |\n";
-		cout << "|              5. Go Back                   |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printExit()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |            Exit           |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |          Good Bye         |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printInsertStudentData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Insert Student Data    |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printInsertSubjectData()
-	{
-		{
-			cout << ",-------------------------------------------.\n";
-			cout << "|                                           |\n";
-			cout << "|       ,---------------------------.       |\n";
-			cout << "|       |                           |       |\n";
-			cout << "|       |    Insert Subject Data    |       |\n";
-			cout << "|       |                           |       |\n";
-			cout << "|       `---------------------------'       |\n";
-			cout << "|                                           |\n";
-			cout << "`-------------------------------------------'\n";
-		}
-	}
-	void printInsertCourseData()
-	{
-		{
-			cout << ",-------------------------------------------.\n";
-			cout << "|                                           |\n";
-			cout << "|       ,---------------------------.       |\n";
-			cout << "|       |                           |       |\n";
-			cout << "|       |    Insert Course Data     |       |\n";
-			cout << "|       |                           |       |\n";
-			cout << "|       `---------------------------'       |\n";
-			cout << "|                                           |\n";
-			cout << "`-------------------------------------------'\n";
-		}
-	}
-	void printInsertLoginInfoData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |   Insert LoginInfo Data   |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printUpdateStudentData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Update Student Data    |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printUpdateSubjectData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Update Subject Data    |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printUpdateCourseData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Update Course Data     |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printUpdateLoginInfoData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |   Update LoginInfo Data   |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printDeleteStudentData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Delete Student Data    |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printDeleteSubjectData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Delete Subject Data    |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printDeleteCourseData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |    Delete Course Data     |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
-	}
-	void printDeleteLoginInfoData()
-	{
-		cout << ",-------------------------------------------.\n";
-		cout << "|                                           |\n";
-		cout << "|       ,---------------------------.       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       |   Delete LoginInfo Data   |       |\n";
-		cout << "|       |                           |       |\n";
-		cout << "|       `---------------------------'       |\n";
-		cout << "|                                           |\n";
-		cout << "`-------------------------------------------'\n";
 	}
 };
 
@@ -1200,4 +1200,6 @@ int main()
 			sleep_for(seconds(1));
 		}
 	}
+
+	return 0;
 }
