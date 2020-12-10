@@ -9,7 +9,7 @@
 #include <vector>
 #include <sstream>
 #include "ManageTable.h"
-
+#include <stdexcept>
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
@@ -328,27 +328,38 @@ public:
 
 		// 예외처리 필요
 		Student student = Student();
-		string studentId, name, email, phoneNum, sex;
-		short grade, age;
-
 		cout << "ex)학번,이름,성별,학년,나이,이메일,휴대폰번호('-'제외)\n";
-		cout << "Enter data : ";
-		vector<string> results;
-		string str;
-		cin >> str;
-		stringstream ss(str);
 
-		while (getline(ss, str, ','))
+		while (true)
 		{
-			results.push_back(str);
+			try
+			{
+				cout << "Enter data : ";
+				vector<string> results;
+				string str;
+				cin >> str;
+				stringstream ss(str);
+
+				while (getline(ss, str, ','))
+				{
+					results.push_back(str);
+				}
+				student.setStudentId(results.at(0));
+				student.setName(results.at(1));
+				student.setSex(results.at(2));
+				student.setGrade(stoi(results.at(3)));
+				student.setAge(stoi(results.at(4)));
+				student.setEmail(results.at(5));
+				student.setPhoneNum(results.at(6));
+				break;
+			}
+			catch (const exception& error)
+			{
+				cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+				sleep_for(seconds(1));
+				continue;
+			}
 		}
-		student.setStudentId(results[0]);
-		student.setName(results[1]);
-		student.setSex(results[2]);
-		student.setGrade(stoi(results[3]));
-		student.setAge(stoi(results[4]));
-		student.setEmail(results[5]);
-		student.setPhoneNum(results[6]);
 
 		if (studentManager.insertData(student))
 		{
@@ -369,27 +380,39 @@ public:
 
 		// 예외처리 필요
 		Subject subject = Subject();
-		string classCode, className, professor, timePlan, classified, evalType;
-		int grade;
-
 		cout << "ex)과목코드,과목명,교수명,학점,시간표(화(789)),이수구분(전공 or 교양),평가유형(상대평가 or 절대평가)\n";
-		cout << "Enter data : ";
-		vector<string> results;
-		string str;
-		cin >> str;
-		stringstream ss(str);
 
-		while (getline(ss, str, ','))
+		while (true)
 		{
-			results.push_back(str);
+			try
+			{
+				cout << "Enter data : ";
+				vector<string> results;
+				string str;
+				cin >> str;
+				stringstream ss(str);
+
+				while (getline(ss, str, ','))
+				{
+					results.push_back(str);
+				}
+				subject.setClassCode(results.at(0));
+				subject.setClassName(results.at(1));
+				subject.setProfessor(results.at(2));
+				subject.setGrade(stoi(results.at(3)));
+				subject.setTimePlan(results.at(4));
+				subject.setClassified(results.at(5));
+				subject.setEvalType(results.at(6));
+
+				break;
+			}
+			catch (const exception& error)
+			{
+				cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+				sleep_for(seconds(1));
+				continue;
+			}
 		}
-		subject.setClassCode(results[0]);
-		subject.setClassName(results[1]);
-		subject.setProfessor(results[2]);
-		subject.setGrade(stoi(results[3]));
-		subject.setTimePlan(results[4]);
-		subject.setClassified(results[5]);
-		subject.setEvalType(results[6]);
 
 		if (subjectManager.insertData(subject))
 		{
@@ -411,25 +434,39 @@ public:
 		// 예외처리 필요
 		Course course = Course();
 		string studentId, classCode, className, professor, timePlan, location;
-
 		cout << "ex)학번,과목코드,과목명,교수명,시간표(화(789)),강의실(아(605))\n";
-		cout << "Enter data : ";
-		vector<string> results;
-		string str;
-		cin >> str;
-		stringstream ss(str);
 
-		while (getline(ss, str, ','))
+		while (true)
 		{
-			results.push_back(str);
-		}
+			try
+			{
+				cout << "Enter data : ";
+				vector<string> results;
+				string str;
+				cin >> str;
+				stringstream ss(str);
 
-		course.setStudentId(results[0]);
-		course.setClassCode(results[1]);
-		course.setClassName(results[2]);
-		course.setProfessor(results[3]);
-		course.setTimePlan(results[4]);
-		course.setLocation(results[5]);
+				while (getline(ss, str, ','))
+				{
+					results.push_back(str);
+				}
+
+				course.setStudentId(results.at(0));
+				course.setClassCode(results.at(1));
+				course.setClassName(results.at(2));
+				course.setProfessor(results.at(3));
+				course.setTimePlan(results.at(4));
+				course.setLocation(results.at(5));
+
+				break;
+			}
+			catch (const exception& error)
+			{
+				cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+				sleep_for(seconds(1));
+				continue;
+			}
+		}
 
 		if (courseManager.insertData(course))
 		{
@@ -453,20 +490,34 @@ public:
 		string studentId, password;
 		//string user_input;
 		cout << "ex)학번,비밀번호\n";
-		cout << "Enter data : ";
-		vector<string> results;
-		string str;
-		cin >> str;
-		stringstream ss(str);
 
-		while (getline(ss, str, ','))
+		while (true)
 		{
-			results.push_back(str);
+			try
+			{
+				cout << "Enter data : ";
+				vector<string> results;
+				string str;
+				cin >> str;
+				stringstream ss(str);
+
+				while (getline(ss, str, ','))
+				{
+					results.push_back(str);
+				}
+
+				loginInfo.setStudentId(results.at(0));
+				loginInfo.setPassword(results.at(1));
+
+				break;
+			}
+			catch (const exception& error)
+			{
+				cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+				sleep_for(seconds(1));
+				continue;
+			}
 		}
-
-
-		loginInfo.setStudentId(results[0]);
-		loginInfo.setPassword(results[1]);
 
 		if (loginInfoManager.insertData(loginInfo))
 		{

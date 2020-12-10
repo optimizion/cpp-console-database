@@ -496,21 +496,37 @@ bool StudentManager::updateData(string studentId)
 				string name, email, phoneNum, sex;
 				short grade, age;
 				cout << "ex)이름,성별,학년,나이,이메일,휴대폰번호('-'제외)" << endl;
-				cout << "Enter data : ";
-				string user_input;
-				vector<string> changedData;
-				cin >> user_input;
-				stringstream ss(user_input);
-				while (getline(ss, user_input, ','))
+
+				while (true)
 				{
-					changedData.push_back(user_input);
+					try
+					{
+						cout << "Enter data : ";
+						string user_input;
+						vector<string> changedData;
+						cin >> user_input;
+						stringstream ss(user_input);
+						while (getline(ss, user_input, ','))
+						{
+							changedData.push_back(user_input);
+						}
+						name = changedData.at(0);
+						sex = changedData.at(1);
+						grade = stoi(changedData.at(2));
+						age = stoi(changedData.at(3));
+						email = changedData.at(4);
+						phoneNum = changedData.at(5);
+
+						break;
+					}
+					catch (const exception& error)
+					{
+						cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+						sleep_for(seconds(1));
+						continue;
+					}
 				}
-				name = changedData[0];
-				sex = changedData[1];
-				grade = stoi(changedData[2]);
-				age = stoi(changedData[3]);
-				email = changedData[4];
-				phoneNum = changedData[5];
+
 				fout.seekp(pointer);
 
 				fout << studentId << "," << name << "," << sex << "," << grade << "," << age << "," << email << "," << phoneNum << endl;
@@ -553,13 +569,23 @@ Student StudentManager::queryStudentData(string studentId)
 		if (results[0] == studentId)
 		{
 			Student student;
-			student.setStudentId(results[0]);
-			student.setName(results[1]);
-			student.setSex(results[2]);
-			student.setGrade(stoi(results[3]));
-			student.setAge(stoi(results[4]));
-			student.setEmail(results[5]);
-			student.setPhoneNum(results[6]);
+			try
+			{
+				student.setStudentId(results.at(0));
+				student.setName(results.at(1));
+				student.setSex(results.at(2));
+				student.setGrade(stoi(results.at(3)));
+				student.setAge(stoi(results.at(4)));
+				student.setEmail(results.at(5));
+				student.setPhoneNum(results.at(6));
+			}
+			catch (const exception& error)
+			{
+				cout << "오류가 발생했습니다. 관리자한테 문의하세요 *^^*" << endl << endl;
+				sleep_for(seconds(2));
+				continue;
+			}
+
 			fin.close();
 			return student;
 		}
@@ -687,21 +713,37 @@ bool SubjectManager::updateData(string classCode)
 				string className, professor, timePlan, classified, evalType;
 				int grade;
 				cout << "ex)과목명,교수명,학점,시간표(화(789)),이수구분(전공 or 교양),평가유형(상대평가 or 절대평가)" << endl;
-				cout << "Enter data : ";
-				string user_input;
-				vector<string> changedData;
-				cin >> user_input;
-				stringstream ss(user_input);
-				while (getline(ss, user_input, ','))
+
+				while (true)
 				{
-					changedData.push_back(user_input);
+					try
+					{
+						cout << "Enter data : ";
+						string user_input;
+						vector<string> changedData;
+						cin >> user_input;
+						stringstream ss(user_input);
+						while (getline(ss, user_input, ','))
+						{
+							changedData.push_back(user_input);
+						}
+						className = changedData.at(0);
+						professor = changedData.at(1);
+						grade = stoi(changedData.at(2));
+						timePlan = changedData.at(3);
+						classified = changedData.at(4);
+						evalType = changedData.at(5);
+
+						break;
+					}
+					catch (const exception& error)
+					{
+						cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+						sleep_for(seconds(1));
+						continue;
+					}
 				}
-				className = changedData[0];
-				professor = changedData[1];
-				grade = stoi(changedData[2]);
-				timePlan = changedData[3];
-				classified = changedData[4];
-				evalType = changedData[5];
+
 				fout.seekp(pointer);
 
 				fout << classCode << "," << className << "," << professor << "," << grade << "," << timePlan << "," << classified << "," << evalType << endl;
@@ -748,7 +790,7 @@ bool SubjectManager::querySubjectData()
 		cout << "| ";
 		for (int i = 0; i < results.size(); i++)
 		{
-			cout << results[i] << " | ";
+			cout << results.at(i) << " | ";
 		}
 		cout << endl;
 	}
@@ -877,19 +919,36 @@ bool CourseManager::updateData(string studentId, string classCode)
 		{
 			string className, professor, timePlan, location;
 			cout << "ex)과목명,교수명,시간표(화(789)),강의실(아(605))\n";
-			cout << "Enter data : ";
-			string user_input;
-			vector<string> changedData;
-			cin >> user_input;
-			stringstream ss(user_input);
-			while (getline(ss, user_input, ','))
+
+			while (true)
 			{
-				changedData.push_back(user_input);
+				try
+				{
+					cout << "Enter data : ";
+					string user_input;
+					vector<string> changedData;
+					cin >> user_input;
+					stringstream ss(user_input);
+					while (getline(ss, user_input, ','))
+					{
+						changedData.push_back(user_input);
+					}
+					className = changedData.at(0);
+					professor = changedData.at(1);
+					timePlan = changedData.at(2);
+					location = changedData.at(3);
+
+					break;
+				}
+
+				catch (const exception& error)
+				{
+					cout << "입력 오류가 발생했습니다. 다시 입력해주세요." << endl << endl;
+					sleep_for(seconds(1));
+					continue;
+				}
 			}
-			className = changedData[0];
-			professor = changedData[1];
-			timePlan = changedData[2];
-			location = changedData[3];
+
 			fout.seekp(pointer);
 
 			fout << studentId << "," << classCode << "," << className << "," << professor << "," << timePlan << "," << location << endl;
@@ -931,7 +990,7 @@ bool CourseManager::queryCourseData(string studentId)
 		{
 			results.push_back(str);
 		}
-		if (results[0] == studentId)
+		if (results.at(0) == studentId)
 		{
 			cout << "| ";
 			for (int i = 0; i < results.size(); i++)
@@ -1127,7 +1186,7 @@ bool LoginInfoManager::checkLogin(string studentId, string password)
 			results.push_back(str);
 		}
 		// 해당 로그인 정보가 맞으면
-		if (results[0] == studentId && results[1] == password)
+		if (results.at(0) == studentId && results.at(1) == password)
 		{
 			fin.close();
 			return true;

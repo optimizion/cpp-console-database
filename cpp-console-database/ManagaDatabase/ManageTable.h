@@ -11,6 +11,7 @@
 #include <chrono>
 #include <direct.h>
 #include <sstream>
+#include <stdexcept>
 using namespace std::this_thread;
 using namespace std::chrono;
 using namespace std;
