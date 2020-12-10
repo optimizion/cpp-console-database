@@ -350,8 +350,11 @@ public:
 		student.setEmail(results[5]);
 		student.setPhoneNum(results[6]);
 
-		studentManager.insertData(student);
-		return true;
+		if (studentManager.insertData(student))
+		{
+			return true;
+		}
+		return false;
 	}
 	bool inputSubjectData()
 	{
@@ -388,8 +391,11 @@ public:
 		subject.setClassified(results[5]);
 		subject.setEvalType(results[6]);
 
-		subjectManager.insertData(subject);
-		return true;
+		if (subjectManager.insertData(subject))
+		{
+			return true;
+		}
+		return false;
 	}
 	bool inputCourseData()
 	{
@@ -424,8 +430,12 @@ public:
 		course.setProfessor(results[3]);
 		course.setTimePlan(results[4]);
 		course.setLocation(results[5]);
-		courseManager.insertData(course);
-		return true;
+
+		if (courseManager.insertData(course))
+		{
+			return true;
+		}
+		return false;
 	}
 	bool inputLoginInfoData()
 	{
@@ -457,8 +467,12 @@ public:
 
 		loginInfo.setStudentId(results[0]);
 		loginInfo.setPassword(results[1]);
-		loginInfoManager.insertData(loginInfo);
-		return true;
+
+		if (loginInfoManager.insertData(loginInfo))
+		{
+			return true;
+		}
+		return false;
 	}
 	bool updateStudentData()
 	{
@@ -869,13 +883,13 @@ int main()
 						if (isSuccessed)
 						{
 							cout << "데이터 삽입에 성공하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 							break;
 						}
 						else
 						{
 							cout << "데이터 삽입에 실패하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 							break;
 						}
 
@@ -890,12 +904,12 @@ int main()
 						if (isSuccessed)
 						{
 							cout << "데이터 수정에 성공하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 						}
 						else
 						{
 							cout << "데이터 수정에 실패하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 						}
 					}
 					// delete data
@@ -908,12 +922,12 @@ int main()
 						if (isSuccessed)
 						{
 							cout << "데이터 삭제에 성공하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 						}
 						else
 						{
 							cout << "데이터 삭제에 실패하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 						}
 					}
 					// go back
@@ -928,7 +942,7 @@ int main()
 						cout << "wrong input. Please try again.\n";
 						cin.clear();
 						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-						sleep_for(seconds(1));
+						sleep_for(seconds(2));
 					}
 				}
 				// subject table
@@ -948,7 +962,7 @@ int main()
 						if (isSuccessed)
 						{
 							cout << "데이터 삽입에 성공하였습니다.\n";
-							sleep_for(seconds(1));
+							sleep_for(seconds(2));
 						}
 						else
 						{

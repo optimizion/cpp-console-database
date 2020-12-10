@@ -365,51 +365,8 @@ bool TableManager::hasTable(TABLE table)
 }
 
 StudentManager::StudentManager() {}
-void StudentManager::insertData(Student studentData)
+bool StudentManager::insertData(Student studentData)
 {
-	/*
-	string UserInput;
-
-	string Id;
-	string Name;
-	char Sex;
-	int Grade;
-	int Age;
-	string Email;
-	string PhoneNum;
-	string Address;
-
-	cout << "학번을 입력하세요.->";
-	cin >> Id;
-	cout << "이름을 입력하세요.->";
-	cin >> Name;
-	cout << "성별 (남/여)->";
-	cin >> UserInput;
-	if (SexInput == "남")
-		Sex = 'm';
-	else if (SexInput == "여")
-		Sex = 'f';
-	else
-	{
-		cout << "성별을 잘못 입력하셨습니다.";
-		return;
-	}
-	cout << "학년을 입력하세요(1~4).";
-	cin >> Grade;
-	if (Grade < 1 || Grade > 4)
-	{
-		cout << "학년을 잘못 입력하셨습니다.";
-		return;
-	}
-	cout << "나이를 입력하세요.";
-	cin >> Age;
-	cout << "이메일을 입력하세요.";
-	cin >> Email;
-	cout << "전화번호를 입력하세요.->";
-	cin >> PhoneNum;
-	cout << "주소를 입력하세요->";
-	cin >> Address;
-	*/
 	string studentId = studentData.getStudentId();
 	string name = studentData.getName();
 	string sex = studentData.getSex();
@@ -418,14 +375,33 @@ void StudentManager::insertData(Student studentData)
 	string email = studentData.getEmail();
 	string phoneNum = studentData.getPhoneNum();
 
-	//File_Manager_Student Manager;
-	//student a(Id, Name, Sex, Grade, Age, Email, PhoneNum, Address);
-	//Manager.AddStudent(studentData);
-	//Manager.MoveFirst();
+	ifstream fin;
+	string line, str;
+	fin.open("./table/student.txt", ios::in);
+	// studentId 데이터가 파일에 존재하는지 확인
+	while (getline(fin, line))
+	{
+		stringstream ss;
+		vector<string> results;
+		ss.str(line);
+		//cout << line << endl;
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+		if (results[0] == studentId)
+		{
+			cout << "이미 해당 학번의 데이터가 존재합니다." << endl;
+			return false;
+		}
+	}
+
 	ofstream fout;
 	fout.open("./table/student.txt", ofstream::app);
 	fout << studentId << "," << name << "," << sex << "," << grade << "," << age << "," << email << "," << phoneNum << endl;
+	fin.close();
 	fout.close();
+	return true;
 }
 bool StudentManager::deleteData(string studentId)
 {
@@ -593,7 +569,7 @@ Student StudentManager::queryStudentData(string studentId)
 }
 
 SubjectManager::SubjectManager() {}
-void SubjectManager::insertData(Subject subjectData)
+bool SubjectManager::insertData(Subject subjectData)
 {
 	string classCode = subjectData.getClassCode();
 	string className = subjectData.getClassName();
@@ -603,10 +579,33 @@ void SubjectManager::insertData(Subject subjectData)
 	string classified = subjectData.getClassified();
 	string evalType = subjectData.getEvalType();
 
+	ifstream fin;
+	string line, str;
+	fin.open("./table/subject.txt", ios::in);
+	// studentId 데이터가 파일에 존재하는지 확인
+	while (getline(fin, line))
+	{
+		stringstream ss;
+		vector<string> results;
+		ss.str(line);
+		//cout << line << endl;
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+		if (results[0] == classCode)
+		{
+			cout << "이미 해당 과목코드의 데이터가 존재합니다." << endl;
+			return false;
+		}
+	}
+
 	ofstream fout;
 	fout.open("./table/subject.txt", ofstream::app);
 	fout << classCode << "," << className << "," << professor << "," << grade << "," << timePlan << "," << classified << "," << evalType << endl;
+	fin.close();
 	fout.close();
+	return true;
 }
 bool SubjectManager::deleteData(string classCode)
 {
@@ -758,7 +757,7 @@ bool SubjectManager::querySubjectData()
 }
 
 CourseManager::CourseManager() {}
-void CourseManager::insertData(Course courseData)
+bool CourseManager::insertData(Course courseData)
 
 {
 	string studentId = courseData.getStudentId();
@@ -768,10 +767,33 @@ void CourseManager::insertData(Course courseData)
 	string timePlan = courseData.getTimePlan();
 	string location = courseData.getLocation();
 
+	ifstream fin;
+	string line, str;
+	fin.open("./table/course.txt", ios::in);
+	// studentId 데이터가 파일에 존재하는지 확인
+	while (getline(fin, line))
+	{
+		stringstream ss;
+		vector<string> results;
+		ss.str(line);
+		//cout << line << endl;
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+		if (results[0] == studentId && results[1] == classCode)
+		{
+			cout << "이미 해당 수강 데이터가 존재합니다." << endl;
+			return false;
+		}
+	}
+
 	ofstream fout;
 	fout.open("./table/course.txt", ofstream::app);
 	fout << studentId << "," << classCode << "," << className << "," << professor << "," << timePlan << "," << location << endl;
+	fin.close();
 	fout.close();
+	return true;
 }
 bool CourseManager::deleteData(string studentId, string classCode)
 {
@@ -925,15 +947,38 @@ bool CourseManager::queryCourseData(string studentId)
 }
 
 LoginInfoManager::LoginInfoManager() {}
-void LoginInfoManager::insertData(LoginInfo loginData)
+bool LoginInfoManager::insertData(LoginInfo loginData)
 {
 	string studentId = loginData.getStudentId();
 	string password = loginData.getPassword();
+
+	ifstream fin;
+	string line, str;
+	fin.open("./table/loginInfo.txt", ios::in);
+	// studentId 데이터가 파일에 존재하는지 확인
+	while (getline(fin, line))
+	{
+		stringstream ss;
+		vector<string> results;
+		ss.str(line);
+		//cout << line << endl;
+		while (getline(ss, str, ','))
+		{
+			results.push_back(str);
+		}
+		if (results[0] == studentId)
+		{
+			cout << "이미 해당 로그인 정보 데이터가 존재합니다." << endl;
+			return false;
+		}
+	}
+
 	ofstream fout;
 	fout.open("./table/loginInfo.txt", ofstream::app);
 	fout << studentId << "," << password << endl;
+	fin.close();
 	fout.close();
-
+	return true;
 }
 bool LoginInfoManager::deleteData(string studentId)
 {

@@ -156,7 +156,7 @@ class StudentManager : TableManager
 {
 public:
 	StudentManager();
-	void insertData(Student studentData);
+	bool insertData(Student studentData);
 	bool deleteData(string studentId);
 	bool updateData(string studentId);
 	Student queryStudentData(string studentId);
@@ -165,7 +165,7 @@ class SubjectManager : TableManager
 {
 public:
 	SubjectManager();
-	void insertData(Subject subjectData);
+	bool insertData(Subject subjectData);
 	bool deleteData(string classCode);
 	bool updateData(string classCode);
 	bool querySubjectData();
@@ -174,7 +174,7 @@ class CourseManager : TableManager
 {
 public:
 	CourseManager();
-	void insertData(Course courseData);
+	bool insertData(Course courseData);
 	bool deleteData(string studentId, string classCode);
 	bool updateData(string studentId, string classCode);
 	bool queryCourseData(string studentId);
@@ -183,7 +183,7 @@ class LoginInfoManager : TableManager
 {
 public:
 	LoginInfoManager();
-	void insertData(LoginInfo loginData);
+	bool insertData(LoginInfo loginData);
 	bool deleteData(string studentId);
 	bool updatePassword(string studentId);
 	bool checkLogin(string studentId, string password);
