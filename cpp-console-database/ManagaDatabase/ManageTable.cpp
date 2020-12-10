@@ -1006,34 +1006,60 @@ bool LoginInfoManager::updatePassword(string studentId)
 	while (getline(fin, line))
 	{
 		stringstream ss;
+		vector<string> results;
 		ss.str(line);
 		//cout << line << endl;
 		while (getline(ss, str, ','))
 		{
-			vector<string> results;
 			results.push_back(str);
-			// 해당 id가 맞으면
-			if (results[0] == studentId)
+		}
+		// 해당 id가 맞으면
+		if (results[0] == studentId)
+		{
+			string changePassword;
+			fout.seekp(pointer);
+
+			string currentPassword;
+			cout << "현재 비밀번호를 입력하세요 : ";
+			cin >> currentPassword;
+			if (currentPassword != results[1])
 			{
-				string changePassword;
-				fout.seekp(pointer);
+				cout << "비밀번호가 틀립니다." << endl;
+				sleep_for(seconds(1));
+				fin.close();
+				fout.close();
+				return false;
+			}
 
-				cout << "변경할 비밀번호를 입력하세요 : ";
-				cin >> changePassword;
+			cout << "변경할 비밀번호를 입력하세요 : ";
+			cin >> changePassword;
+
+			char user_input;
+			cout << "정말 변경하시겠습니까?(Y/N) : ";
+			cin >> user_input;
+			if (user_input == 'Y' || user_input == 'y')
+			{
 				fout << studentId << "," << changePassword << endl;
-
+				cout << "비밀번호를 변경하였습니다." << endl;
 				fin.close();
 				fout.close();
 				return true;
 			}
-			else
+			else if (user_input == 'N' || user_input == 'n')
 			{
-				pointer = fin.tellg();
-				break;
+				cout << "비밀번호 변경을 취소하였습니다." << endl;
+				fin.close();
+				fout.close();
+				return false;
 			}
 		}
+		else
+		{
+			pointer = fin.tellg();
+			continue;
+		}
 	}
-	cout << "해당 id가 존재하지 않습니다." << endl;
+	cout << "로그인 정보가 존재하지 않습니다." << endl;
 	sleep_for(seconds(1));
 	fin.close();
 	fout.close();

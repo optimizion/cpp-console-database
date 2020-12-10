@@ -147,7 +147,9 @@ public:
 	};
 	// 테이블 생성
 	void createTable(TABLE table);
+	// 테이블 삭제
 	bool deleteTable(TABLE table);
+	// 테이블 존재 여부
 	bool hasTable(TABLE table);
 };
 class StudentManager : TableManager

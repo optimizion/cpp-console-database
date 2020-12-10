@@ -24,9 +24,11 @@ public:
 	void printSelectInfo(string userName);
 	void printExit();
 	bool checkLogin(string id, string pw);
+	bool changePassword(string id);
 	void printStudentInfo();
 	void printSubjectInfo();
 	void printCourseInfo();
+	void printChangePassword();
 };
 
 // 싱글톤 구현
@@ -49,6 +51,16 @@ bool Intranet::checkLogin(string id, string pw)
 	LoginInfoManager loginInfoManager;
 	bool isSuccessed = loginInfoManager.checkLogin(id, pw);
 
+	if (isSuccessed)
+	{
+		return true;
+	}
+	return false;
+}
+bool Intranet::changePassword(string id)
+{
+	LoginInfoManager loginInfoManager;
+	bool isSuccessed = loginInfoManager.updatePassword(id);
 	if (isSuccessed)
 	{
 		return true;
@@ -111,7 +123,8 @@ void Intranet::printSelectInfo(string userName)
 	cout << "|              1. Student Info              |\n";
 	cout << "|              2. Subject Info              |\n";
 	cout << "|              3. Course  Info              |\n";
-	cout << "|              4. Logout                    |\n";
+	cout << "|              4. Change  Password          |\n";
+	cout << "|              5. Logout                    |\n";
 	cout << "`-------------------------------------------'\n";
 }
 void Intranet::printExit()
@@ -165,8 +178,20 @@ void Intranet::printCourseInfo()
 	cout << "|                                           |\n";
 	cout << "`-------------------------------------------'\n";
 }
+void Intranet::printChangePassword()
+{
+	cout << ",-------------------------------------------.\n";
+	cout << "|                                           |\n";
+	cout << "|       ,---------------------------.       |\n";
+	cout << "|       |                           |       |\n";
+	cout << "|       |      Change Password      |       |\n";
+	cout << "|       |                           |       |\n";
+	cout << "|       `---------------------------'       |\n";
+	cout << "|                                           |\n";
+	cout << "`-------------------------------------------'\n";
+}
 
-
+// 인트라넷 프로그램 시작
 int main()
 {
 
@@ -217,7 +242,7 @@ int main()
 						break;
 					}
 				}
-				// enter studentPw. I cannot afford to make it securely. Just show..
+				// enter studentPw.
 				else if (user_input == 2)
 				{
 					cout << "Enter your Password : ";
@@ -325,17 +350,35 @@ int main()
 								cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 								continue;
 							}
-							// Logout
+							// 비밀번호 변경
 							else if (user_input == 4)
+							{
+								intranet->clearConsole();
+								intranet->printChangePassword();
+
+								if (intranet->changePassword(studentId))
+								{
+									system("pause");
+									continue;
+								}
+								cout << "비밀번호 변경에 실패했습니다." << endl;
+								continue;
+							}
+							// Logout
+							else if (user_input == 5)
 							{
 								break;
 							}
 							// wrong input
 							else
 							{
+								// wrong input
+								cout << "wrong input. Please try again.\n";
+								cin.clear();
+								cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								sleep_for(seconds(1));
 							}
 						}
-
 					}
 					else
 					{
